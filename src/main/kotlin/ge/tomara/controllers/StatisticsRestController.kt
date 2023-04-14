@@ -5,8 +5,11 @@ import org.springframework.web.bind.annotation.RestController
 
 @RestController
 class StatisticsRestController {
+    companion object {
+        const val API_GROUP_ROUTE = "/api"
+    }
 
-    @GetMapping("/")
+    @GetMapping("$API_GROUP_ROUTE/")
     fun helloWorld(): String {
         return "Hello World"
     }
