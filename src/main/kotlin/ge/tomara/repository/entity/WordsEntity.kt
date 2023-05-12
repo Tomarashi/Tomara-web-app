@@ -1,5 +1,6 @@
 package ge.tomara.repository.entity
 
+import ge.tomara.repository.WordsRepository
 import javax.persistence.Column
 import javax.persistence.Entity
 import javax.persistence.GeneratedValue
@@ -8,7 +9,7 @@ import javax.persistence.Id
 import javax.persistence.Table
 
 @Entity
-@Table(name="WORDS")
+@Table(name=WordsRepository.DATABASE_NAME)
 data class WordsEntity(
     @Id()
     @GeneratedValue(strategy=GenerationType.AUTO)
@@ -20,6 +21,4 @@ data class WordsEntity(
     var wordEng: String,
     @Column(name="frequency", nullable=false, unique=false)
     var frequency: Int,
-    @Column(name="word_status", nullable=false, unique=false)
-    var wordStatus: Byte,
 )

@@ -1,5 +1,6 @@
 package ge.tomara.controllers
 
+import ge.tomara.constants.GLOBAL_GROUP
 import ge.tomara.repository.WordsRepository
 import ge.tomara.response.StatisticsResponse
 import org.springframework.beans.factory.annotation.Autowired
