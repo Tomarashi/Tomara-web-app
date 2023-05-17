@@ -6,7 +6,12 @@ plugins {
 	id 'org.jetbrains.kotlin.jvm' version '1.7.22'
 	id 'org.jetbrains.kotlin.plugin.spring' version '1.7.22'
 	id 'org.jetbrains.kotlin.plugin.jpa' version '1.7.22'
+	id 'com.github.node-gradle.node'version '3.5.1'
 }
+
+def frontEndDir = 'front-end'
+def frontEndBuildDir = 'build'
+def staticFolderDir = 'src/main/resources/static'
 
 group = 'ge.tomara'
 version = '1.0.0'
@@ -26,7 +31,14 @@ dependencies {
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 
-tasks.withType(KotlinCompile) {
+node {
+	download = false
+	allowInsecureProtocol = null
+	npmInstallCommand = 'install'
+	nodeProjectDir = file("${project.projectDir}/${frontEndDir}")
+}
+
+tasks.withType(KotlinCompile).configureEach {
 	kotlinOptions {
 		freeCompilerArgs = ['-Xjsr305=strict']
 		jvmTarget = '13'
@@ -35,4 +47,22 @@ tasks.withType(KotlinCompile) {
 
 tasks.named('test') {
 	useJUnitPlatform()
+	testLogging {
+		showStandardStreams = true
+	}
 }
+
+tasks.register('npmRunBuild', NpmTask) {
+    args = ['run', 'build']
+}
+
+tasks.register('copyReactBuild', Copy) {
+	dependsOn npmRunBuild
+	from "${project.projectDir}/${frontEndDir}/${frontEndBuildDir}"
+	into "${project.projectDir}/${staticFolderDir}"
+	doFirst {
+		delete "${project.projectDir}/${staticFolderDir}"
+	}
+}
+
+build.dependsOn copyReactBuild
