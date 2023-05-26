@@ -1,0 +1,5 @@
+Fonts:
+    ALK-Sanet:
+        https://fonts.ge/ka/font/704/ALK-Sanet
+    BPG-Arial:
+        https://fonts.ge/ka/font/13/BPG-Arial
