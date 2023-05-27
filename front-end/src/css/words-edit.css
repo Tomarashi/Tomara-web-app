@@ -1,0 +1,188 @@
+@import url("../font/font.css");
+
+.words-edit-container {
+    width: 100%;
+    max-width: 600px;
+    height: 500px;
+    border: 1px solid;
+    border-radius: 5px;
+    overflow: hidden;
+    box-sizing: border-box;
+    background-color: white;
+}
+
+.words-edit-response-list::-webkit-scrollbar {
+    width: 12px;
+    border-radius: 4px;
+}
+.words-edit-response-list::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+.words-edit-response-list::-webkit-scrollbar-thumb {
+    background: rgba(154, 0, 0, 0.7);
+}
+.words-edit-response-list::-webkit-scrollbar-thumb:hover {
+    background: rgba(154, 0, 0, 1);
+}
+
+.words-edit-input-container {
+    margin: 20px auto auto;
+    width: 300px;
+    height: fit-content;
+}
+
+.words-edit-input {
+    display: block;
+    width: 100%;
+    outline: none;
+    border: none;
+    padding: 8px 0;
+    text-align: center;
+    font-size: 22px;
+    font-family: alk-sanet, sans-serif;
+}
+
+.words-edit-input-loader {
+    width: 100%;
+    height: 4px;
+    background-color: lightgray;
+    overflow: hidden;
+    border-radius: 3px;
+}
+
+.words-edit-input-loader-mover {
+    width: 100%;
+    height: 100%;
+    margin-left: 0;
+    background-color: #9A0000;
+}
+
+.words-edit-input-loader-mover-animation {
+    animation-name: words-edit-input-loader-mover;
+    animation-timing-function: linear;
+}
+
+@keyframes words-edit-input-loader-mover {
+    from {
+        margin-left: -100%;
+    }
+    to {
+        margin-left: 0;
+    }
+}
+
+.words-edit-response-list {
+    margin-top: 20px;
+    margin-bottom: 5px;
+    width: 100%;
+    height: 80%;
+    overflow-y: scroll;
+}
+
+.words-edit-response-list-item-wrapper {
+    width: 80%;
+    margin: 0 auto 8px;
+}
+.words-edit-response-list-item-wrapper:nth-child(0) {
+    margin: 0 auto 4px;
+}
+
+.words-edit-response-list-item {
+    position: relative;
+    text-align: center;
+    font-size: 18px;
+    font-family: bpg-arial, sans-serif;
+    padding: 10px 0;
+    cursor: pointer;
+    border-radius: 7px;
+    z-index: 2;
+}
+
+.words-edit-response-list-item-config {
+    position: relative;
+    width: 100%;
+    height: 45px;
+    margin: 0 auto 0;
+    border: 1px solid grey;
+    border-top: none;
+    border-radius: 0 0 5px 5px;
+    box-sizing: border-box;
+    background-color: rgba(240, 240, 240, 1);
+    overflow: hidden;
+    z-index: 1;
+}
+
+.words-edit-response-list-item-config-valid,
+.words-edit-response-list-item-config-deleted {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: start;
+}
+
+.words-edit-response-list-item-config-valid button {
+    margin-left: 10px;
+    background-color: rgba(154, 0, 0, 0.6);
+    padding: 5px 8px;
+    border-radius: 4px;
+    color: white;
+    border: none;
+    outline: none;
+    cursor: pointer;
+}
+.words-edit-response-list-item-config-valid button:hover {
+    background-color: rgba(154, 0, 0, 1);
+}
+
+.words-edit-response-list-item-valid {
+    background-color: rgba(50, 205, 50, 0.6);
+    color: white;
+}
+.words-edit-response-list-item-valid-config-open {
+    background-color: rgba(50, 205, 50, 0.9) !important;
+    border-radius: 7px 7px 0 0 !important;
+}
+
+.words-edit-response-list-item-deleted {
+    background-color: rgba(205, 92, 92, 0.65);
+    color: white;
+}
+.words-edit-response-list-item-deleted-config-open {
+    background-color: rgba(205, 92, 92, 1) !important;
+    border-radius: 7px 7px 0 0 !important;
+}
+
+.words-edit-fetching-loader {
+    position: relative;
+    margin: auto;
+    left: 50%;
+    top: 45%;
+    -webkit-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+}
+
+.words-edit-empty-response {
+    width: 100%;
+}
+
+.words-edit-empty-response-add-word-button {
+    display: table;
+    margin-top: 40px;
+    margin-left: auto;
+    margin-right: auto;
+    width: 220px;
+    height: 50px;
+    border-radius: 8px;
+    color: white;
+    background-color: rgba(154, 0, 0, 0.9);
+    font-size: 20px;
+    font-family: bpg-arial, sans-serif;
+    cursor: pointer;
+}
+
+.words-edit-empty-response-add-word-button span {
+    display: table-cell;
+    vertical-align: middle;
+    text-align: center;
+}
