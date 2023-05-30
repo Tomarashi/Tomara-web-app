@@ -1,6 +1,6 @@
 package ge.tomara.repository
 
-import ge.tomara.repository.entity.WordsOfferAddEntity
+import ge.tomara.entity.WordsOfferAddEntity
 import org.springframework.data.repository.CrudRepository
 import org.springframework.stereotype.Repository
 

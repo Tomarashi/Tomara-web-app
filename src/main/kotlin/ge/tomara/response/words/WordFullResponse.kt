@@ -1,7 +1,7 @@
-package ge.tomara.response
+package ge.tomara.response.words
 
 import com.fasterxml.jackson.annotation.JsonProperty
-import ge.tomara.repository.entity.WordsEntity
+import ge.tomara.entity.WordsEntity
 
 data class WordFullResponse(
     @JsonProperty("word_id") var id: Int,

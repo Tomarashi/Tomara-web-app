@@ -1,4 +1,4 @@
-package ge.tomara.response
+package ge.tomara.response.statistics
 
 import com.fasterxml.jackson.annotation.JsonProperty
 

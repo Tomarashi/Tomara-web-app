@@ -1,4 +1,4 @@
-package ge.tomara.repository.entity
+package ge.tomara.entity
 
 import ge.tomara.repository.WordsOfferAddStoreRepository
 import javax.persistence.Column
