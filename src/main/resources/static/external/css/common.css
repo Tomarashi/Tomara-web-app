@@ -1,0 +1,41 @@
+@import url("../font/font.css");
+
+.middle {
+    position: absolute;
+    width: fit-content;
+    height: fit-content;
+    top: 45%;
+    left: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+}
+
+.middle-text-top,
+.middle-text-bottom {
+    width: 100%;
+    text-align: center;
+    padding: 0;
+    margin: 0;
+}
+
+.middle-separator {
+    height: 12px;
+}
+
+.middle-text-top-icon {
+    font-family: sans-serif;
+}
+
+.middle-text-top-text,
+.middle-text-bottom {
+    font-family: alk-sanet, sans-serif;
+    font-weight: bold;
+}
+
+.middle-text-top {
+    font-size: 72px;
+}
+
+.middle-text-bottom {
+    font-size: 42px;
+}

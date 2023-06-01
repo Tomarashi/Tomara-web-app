@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    <link rel="stylesheet" href="/external/css/common.css" />
+    <link rel="icon" href="/external/icon/favicon.ico" />
+
+    <title></title>
+
+    <script>
+        const PAGE_MESSAGE = "გვერდი ვერ მოიძებნა";
+        const SAD_SMILE = ":("
+
+        window.addEventListener("load", () => {
+            document.title = PAGE_MESSAGE;
+            document.getElementById("page-message").innerText = `${PAGE_MESSAGE} ${SAD_SMILE}`;
+        });
+    </script>
+</head>
+<body>
+    <div class="middle">
+        <!--
+            404
+            ⊂_ヽ
+            　 ＼＼
+            　　 ＼( ͡° ͜ʖ ͡°)
+            　　　 >　⌒ヽ
+            　　　/ 　 へ＼
+            　　 /　　/　＼＼
+            　　 ﾚ　ノ　　 ヽ_つ
+            　　/　/
+            　 /　/|
+            　(　(ヽ
+            　|　|、＼
+            　| 丿 ＼ ⌒)
+            　| |　　) /
+            ノ )　　Lﾉ
+           (_／
+        -->
+        <p class="middle-text-top">
+            <span class="middle-text-top-icon">¯\_(ツ)_/¯</span>
+            <span class="middle-text-top-text">404</span>
+        </p>
+        <div class="middle-separator"></div>
+        <p class="middle-text-bottom" id="page-message"></p>
+    </div>
+</body>
+</html>

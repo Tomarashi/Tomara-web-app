@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    <link rel="stylesheet" href="/external/css/common.css" />
+    <link rel="icon" href="/external/icon/favicon.ico" />
+
+    <title></title>
+
+    <script>
+        const PAGE_MESSAGE = "შეცდომა სერვერზე";
+
+        window.addEventListener("load", () => {
+            document.title = PAGE_MESSAGE;
+            document.getElementById("page-message").innerText = PAGE_MESSAGE;
+        });
+    </script>
+</head>
+<body>
+    <div class="middle">
+        <p class="middle-text-top">
+            <span class="middle-text-top-icon">(⊙＿⊙')</span>
+            <span class="middle-text-top-text">500</span>
+        </p>
+        <div class="middle-separator"></div>
+        <p class="middle-text-bottom" id="page-message"></p>
+    </div>
+</body>
+</html>

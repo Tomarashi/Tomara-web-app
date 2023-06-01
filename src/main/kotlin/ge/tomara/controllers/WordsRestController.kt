@@ -19,16 +19,15 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 import java.util.concurrent.locks.ReentrantLock
 
 @RestController
+@RequestMapping("$GLOBAL_GROUP/word")
 class WordsRestController {
     companion object {
-        const val API_LOCAL_GROUP_ROUTE = "$GLOBAL_GROUP/word"
-        const val API_LOCAL_OFFER_GROUP_ROUTE = "$API_LOCAL_GROUP_ROUTE/offer"
-
         const val ERROR_MSG_INVALID_WORD_ID = "Invalid word's ID"
 
         const val SUCCESS_MSG_ADD_OFFER_STORED = "Offer to add is Stored"
@@ -53,7 +52,7 @@ class WordsRestController {
     private val addWordOfferLock = ReentrantLock()
     private val deleteWordOfferLock = ReentrantLock()
 
-    @GetMapping("$API_LOCAL_GROUP_ROUTE/find")
+    @GetMapping("/find")
     fun findWords(
         @RequestParam("sub_geo_word", required=true) subString: String,
         @RequestParam("n_limit", required=false) nLimitArg: Int? = null,
@@ -80,7 +79,7 @@ class WordsRestController {
         )
     }
 
-    @PostMapping("$API_LOCAL_OFFER_GROUP_ROUTE/add")
+    @PostMapping("/offer/add")
     fun addWordOffer(
         @RequestParam("new_word", required=true) newWord: String,
     ): ResponseEntity<Any> {
@@ -101,7 +100,7 @@ class WordsRestController {
         }
     }
 
-    @PostMapping("$API_LOCAL_OFFER_GROUP_ROUTE/delete")
+    @PostMapping("/offer/delete")
     fun deleteWordOffer(
         @RequestParam("word_id", required=true) delWordId: Int,
     ): ResponseEntity<Any> {
