@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link rel="stylesheet" href="/external/css/login-page.css" />
+    <link rel="icon" href="/external/icon/favicon.ico" />
+
+    <title>შესვლა | Tomara</title>
+</head>
+<body>
+
+    <div class="login-page-container-global">
+        <div class="login-page-container">
+            <div class="login-page-container-header">
+                <img src="/external/media/logo.png" alt="Tomara" /> <span>აუტენტიფიკაცია</span>
+            </div>
+            <form th:action="@{/login}" method="post">
+                <input
+                    name="username"
+                    class="login-page-container-username"
+                    placeholder="მომხმარებელი"
+                    type="text" />
+                <input
+                    name="password"
+                    class="login-page-container-password"
+                    placeholder="პაროლი"
+                    type="password" />
+                <p class="login-page-container-invalid-userpass">
+                    <style th:if="${param.error}">
+                        .login-page-container-invalid-userpass {
+                            visibility: visible;
+                        }
+                    </style>
+                    არასწორი მომხმარებელი ან პაროლი
+                </p>
+                <button
+                    class="login-page-container-login-button"
+                    type="submit">
+                    შესვლა
+                </button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

@@ -13,7 +13,7 @@ class TemplateResolverConfiguration {
     }
 
     @Bean
-    fun templateResolver(): SpringResourceTemplateResolver {
+    fun templateResolverStatic(): SpringResourceTemplateResolver {
         return SpringResourceTemplateResolver().apply {
             prefix = "classpath:/static/"
             suffix = HTML_SUFFIX
@@ -26,13 +26,26 @@ class TemplateResolverConfiguration {
     }
 
     @Bean
-    fun errorTemplateResolver(): SpringResourceTemplateResolver {
+    fun templateResolverViews(): SpringResourceTemplateResolver {
+        return SpringResourceTemplateResolver().apply {
+            prefix = "classpath:/views/"
+            suffix = HTML_SUFFIX
+            templateMode = TemplateMode.HTML
+            characterEncoding = StandardCharsets.UTF_8.name()
+            order = 1
+            isCacheable = false
+            checkExistence = true
+        }
+    }
+
+    @Bean
+    fun templateResolverError(): SpringResourceTemplateResolver {
         return SpringResourceTemplateResolver().apply {
             prefix = "classpath:/static/"
             suffix = HTML_SUFFIX
             templateMode = TemplateMode.HTML
             characterEncoding = StandardCharsets.UTF_8.name()
-            order = 1
+            order = 2
             isCacheable = false
             checkExistence = true
         }

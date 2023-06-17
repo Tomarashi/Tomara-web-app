@@ -71,7 +71,7 @@ const WordMetadata = function(wordResponse) {
         });
         fetch(url, {
             method: "POST",
-        }).then(res => res.text())
+        }).then(res => res.json())
             .then((data) => {
                 LOGGER.log(data);
             })
@@ -90,14 +90,10 @@ const WordMetadata = function(wordResponse) {
                 </div>
             );
         } else if(wordType === WORD_TYPE_DELETED) {
-            return (
-                <div className="words-edit-response-list-item-config-deleted">
-                    <!-- TODO -->
-                </div>
-            );
-        } else {
+            // Temporarily unavailable
             return null;
         }
+        return null;
     })();
 
     return (
@@ -105,7 +101,10 @@ const WordMetadata = function(wordResponse) {
             <div
                 id={id}
                 className={classNames}
-                onClick={() => {
+                style={{
+                    cursor: (configContent)? "pointer": "auto"
+                }}
+                onClick={(configContent === null)? null: (() => {
                     const thisElement = document.getElementById(id);
                     const thisElementConfig = document.getElementById(idConfig);
 
@@ -117,17 +116,24 @@ const WordMetadata = function(wordResponse) {
                         thisElement.classList.remove(classNameWhenConfigOpened);
                     }
                     thisElementConfig.style.display = (configIsVisible)? "block": "none";
-                }}>
+                })}>
                 {wordGeo}
             </div>
-            <div
-                id={idConfig}
-                className="words-edit-response-list-item-config"
-                style={{
-                    display: "none",
-                }}>
-                {configContent}
-            </div>
+            {(() => {
+                if(configContent) {
+                    return (
+                        <div
+                            id={idConfig}
+                            className="words-edit-response-list-item-config"
+                            style={{
+                                display: "none",
+                            }}>
+                            {configContent}
+                        </div>
+                    );
+                }
+                return null;
+            })()}
         </div>
     );
 };
@@ -138,7 +144,17 @@ const WordsEdit = function () {
 
     const editInputRef = useRef(null);
     const editInputLoaderRef = useRef(null);
-    const [wordsList, updateWordsList] = useState(null);
+    const [wordsList, updateWordsList] = useState([
+        {
+            word_id: 1,
+            word_geo: "abc",
+            type: 1,
+        }, {
+            word_id: 2,
+            word_geo: "def",
+            type: 2,
+        },
+    ].map(obj => new WordMetadata(obj)));
     const [isLoading, setLoading] = useState(false);
 
     let timeout = null;
@@ -240,7 +256,7 @@ const WordsEdit = function () {
         });
         fetch(url, {
             method: "POST",
-        }).then(res => res.text())
+        }).then(res => res.json())
             .then((data) => {
                 LOGGER.log(data);
             })

@@ -1,0 +1,102 @@
+@import url("../font/font.css");
+
+.login-page-container-global {
+    width: 100%;
+    height: 100vh;
+    background-color: whitesmoke;
+}
+
+.login-page-container {
+    width: 360px;
+    height: 280px;
+    background-color: white;
+    position: relative;
+    left: 50%;
+    top: 40%;
+    -webkit-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+    border-radius: 6px;
+    border: 1px solid lightgrey;
+    overflow: hidden;
+    align-content: center;
+}
+
+.login-page-container-header {
+    position: relative;
+    display: flex;
+    align-items: center;
+    margin-top: 30px;
+    margin-left: 50px;
+    width: fit-content;
+    text-align: center;
+    padding: 0;
+}
+
+.login-page-container-header img {
+    width: 38px;
+    height: 38px;
+    border-radius: 4px;
+}
+
+.login-page-container-header span {
+    margin-left: 10px;
+    font-size: 26px;
+    font-family: alk-sanet, sans-serif;
+    font-weight: bold;
+}
+
+.login-page-container-username,
+.login-page-container-password,
+.login-page-container-login-button {
+    position: relative;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    outline: none;
+}
+
+.login-page-container-username,
+.login-page-container-password {
+    width: 75%;
+    text-align: left;
+    font-family: bpg-arial, sans-serif;
+    font-size: 18px;
+    border-radius: 1px;
+    border: 1px solid grey;
+    padding: 7px 8px;
+}
+
+.login-page-container-login-button {
+    background-color: rgba(154, 0, 0, 1);
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-family: bpg-arial, sans-serif;
+    font-size: 17px;
+}
+
+.login-page-container-username {
+    margin-top: 25px;
+}
+
+.login-page-container-password {
+    margin-top: 10px;
+}
+
+.login-page-container-invalid-userpass {
+    margin-top: 15px;
+    margin-bottom: 0;
+    width: 100%;
+    text-align: center;
+    font-size: 15px;
+    font-family: alk-sanet, sans-serif;
+    color: red;
+    visibility: hidden;
+    padding: 0;
+}
+
+.login-page-container-login-button {
+    margin-top: 15px;
+}

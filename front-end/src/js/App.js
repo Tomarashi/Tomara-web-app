@@ -1,25 +1,19 @@
-import '../css/App.css';
 import {APP_TITLE} from "./Const";
-import {useEffect, useState} from "react";
+import WordsEdit from "./components/WordsEdit";
+import {Route, BrowserRouter, Routes} from "react-router-dom";
+import AdminPage from "./components/admin/AdminPage";
 
 const App = function () {
-    const [value, updateValue] = useState("");
-
-    useEffect(() => {
-        document.title = APP_TITLE;
-
-        fetch("/api/")
-            .then(response => response.text())
-            .then(data => {
-                updateValue(data);
-            });
-    }, []);
+    document.title = APP_TITLE;
 
     return (
-        <div className="App">
-            <div className="App-header">{value}</div>
-        </div>
+        <BrowserRouter>
+            <Routes>
+                <Route path="/" element={<WordsEdit />} />
+                <Route path="/admin" element={<AdminPage />} />
+            </Routes>
+        </BrowserRouter>
     );
-}
+};
 
 export default App;

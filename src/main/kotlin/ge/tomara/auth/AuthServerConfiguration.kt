@@ -8,7 +8,16 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 @Configuration
 @EnableWebSecurity
 class AuthServerConfiguration: WebSecurityConfigurerAdapter() {
+
     override fun configure(http: HttpSecurity?) {
-        http!!.authorizeRequests().antMatchers("/").permitAll()
+        http!!
+            .authorizeRequests()
+                .antMatchers("/admin/**", "/api/admin/**").authenticated()
+                .anyRequest().permitAll()
+                .and()
+            .formLogin()
+                .loginPage("/login")
+                .permitAll()
     }
+
 }
