@@ -57,6 +57,7 @@ tasks.named('test') {
 }
 
 tasks.register('npmRunBuild', NpmTask) {
+	dependsOn npmInstall
     args = ['run', 'build']
 }
 
