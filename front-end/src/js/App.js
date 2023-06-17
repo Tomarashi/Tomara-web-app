@@ -1,5 +1,5 @@
 import {APP_TITLE} from "./Const";
-import WordsEdit from "./components/WordsEdit";
+import WordsEdit from "./components/words/WordsEdit";
 import {Route, BrowserRouter, Routes} from "react-router-dom";
 import AdminPage from "./components/admin/AdminPage";
 
