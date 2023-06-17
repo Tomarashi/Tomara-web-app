@@ -1,6 +1,6 @@
-package ge.tomara.entity
+package ge.tomara.entity.words
 
-import ge.tomara.repository.WordsRepository
+import ge.tomara.repository.words.WordsRepository
 import javax.persistence.Column
 import javax.persistence.Entity
 import javax.persistence.GeneratedValue
@@ -9,7 +9,7 @@ import javax.persistence.Id
 import javax.persistence.Table
 
 @Entity
-@Table(name=WordsRepository.DATABASE_NAME)
+@Table(name= WordsRepository.DATABASE_NAME)
 data class WordsEntity(
     @Id()
     @GeneratedValue(strategy=GenerationType.AUTO)

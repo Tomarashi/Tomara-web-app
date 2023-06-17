@@ -1,6 +1,6 @@
 package ge.tomara.Tomarawebapp.utils
 
-import ge.tomara.response.WordFullResponse
+import ge.tomara.response.words.WordFullResponse
 import ge.tomara.utils.mergeSortedLists
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test

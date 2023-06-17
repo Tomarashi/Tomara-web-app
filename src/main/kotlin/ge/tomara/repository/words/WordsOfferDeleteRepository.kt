@@ -1,6 +1,6 @@
-package ge.tomara.repository
+package ge.tomara.repository.words
 
-import ge.tomara.entity.WordsOfferDeleteEntity
+import ge.tomara.entity.words.WordsOfferDeleteEntity
 import org.springframework.data.repository.CrudRepository
 import org.springframework.stereotype.Repository
 

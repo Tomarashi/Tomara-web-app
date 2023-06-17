@@ -1,7 +1,7 @@
-package ge.tomara.repository
+package ge.tomara.repository.words
 
-import ge.tomara.entity.WordsDeletedEntity
-import ge.tomara.entity.WordsEntity
+import ge.tomara.entity.words.WordsDeletedEntity
+import ge.tomara.entity.words.WordsEntity
 import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.CrudRepository
 import org.springframework.stereotype.Repository

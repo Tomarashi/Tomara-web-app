@@ -1,7 +1,7 @@
 package ge.tomara.controllers
 
 import ge.tomara.constants.GLOBAL_GROUP
-import ge.tomara.repository.WordsRepository
+import ge.tomara.repository.words.WordsRepository
 import ge.tomara.response.statistics.StatisticsResponse
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.GetMapping

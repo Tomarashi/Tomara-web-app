@@ -1,6 +1,6 @@
-package ge.tomara.entity
+package ge.tomara.entity.words
 
-import ge.tomara.repository.WordsOfferDeleteRepository
+import ge.tomara.repository.words.WordsOfferDeleteRepository
 import org.hibernate.annotations.CreationTimestamp
 import java.sql.Timestamp
 import java.util.Date
@@ -12,7 +12,7 @@ import javax.persistence.Id
 import javax.persistence.Table
 
 @Entity
-@Table(name=WordsOfferDeleteRepository.DATABASE_NAME)
+@Table(name= WordsOfferDeleteRepository.DATABASE_NAME)
 data class WordsOfferDeleteEntity(
     @Id()
     @GeneratedValue(strategy=GenerationType.IDENTITY)

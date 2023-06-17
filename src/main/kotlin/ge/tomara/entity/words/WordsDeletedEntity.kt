@@ -1,13 +1,13 @@
-package ge.tomara.entity
+package ge.tomara.entity.words
 
-import ge.tomara.repository.WordsDeletedRepository
+import ge.tomara.repository.words.WordsDeletedRepository
 import javax.persistence.Column
 import javax.persistence.Entity
 import javax.persistence.Id
 import javax.persistence.Table
 
 @Entity
-@Table(name=WordsDeletedRepository.DATABASE_NAME)
+@Table(name= WordsDeletedRepository.DATABASE_NAME)
 data class WordsDeletedEntity(
     @Id()
     @Column(name="deletion_id")

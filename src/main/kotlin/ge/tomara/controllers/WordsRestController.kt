@@ -1,14 +1,14 @@
 package ge.tomara.controllers
 
 import ge.tomara.constants.GLOBAL_GROUP
-import ge.tomara.repository.WordsDeletedRepository
-import ge.tomara.repository.WordsOfferAddRepository
-import ge.tomara.repository.WordsOfferAddStoreRepository
-import ge.tomara.repository.WordsOfferDeleteRepository
-import ge.tomara.repository.WordsRepository
-import ge.tomara.entity.WordsOfferAddEntity
-import ge.tomara.entity.WordsOfferAddStoreEntity
-import ge.tomara.entity.WordsOfferDeleteEntity
+import ge.tomara.repository.words.WordsDeletedRepository
+import ge.tomara.repository.words.WordsOfferAddRepository
+import ge.tomara.repository.words.WordsOfferAddStoreRepository
+import ge.tomara.repository.words.WordsOfferDeleteRepository
+import ge.tomara.repository.words.WordsRepository
+import ge.tomara.entity.words.WordsOfferAddEntity
+import ge.tomara.entity.words.WordsOfferAddStoreEntity
+import ge.tomara.entity.words.WordsOfferDeleteEntity
 import ge.tomara.response.general.ErrorMessageResponse
 import ge.tomara.response.general.SuccessMessageResponse
 import ge.tomara.response.words.WordResponse
@@ -91,7 +91,8 @@ class WordsRestController {
                 )
             }
 
-            wordsOfferAddRepository.save(WordsOfferAddEntity.from(
+            wordsOfferAddRepository.save(
+                WordsOfferAddEntity.from(
                 storeEntity,
             ))
             return ResponseEntity.ok(
@@ -111,7 +112,8 @@ class WordsRestController {
                     ErrorMessageResponse(ERROR_MSG_INVALID_WORD_ID)
                 )
             }
-            wordsOfferDeleteRepository.save(WordsOfferDeleteEntity.from(
+            wordsOfferDeleteRepository.save(
+                WordsOfferDeleteEntity.from(
                 wordsEntity.get(),
             ))
             return ResponseEntity.ok(
