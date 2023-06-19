@@ -1,8 +1,8 @@
-import "../../css/loader.css";
-import "../../media/logo/logo-loader.png";
-import logo from "../../media/logo/logo-loader-min.png";
+import "../../../css/main-loader.css";
+import "../../../media/logo/logo-loader.png";
+import logo from "../../../media/logo/logo-loader-min.png";
 
-const Loader = function () {
+const MainLoader = function () {
     return (
         <>
             <div className="loader-container-wave" />
@@ -13,4 +13,4 @@ const Loader = function () {
     );
 };
 
-export default Loader;
+export default MainLoader;
