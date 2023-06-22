@@ -1,13 +1,19 @@
 package ge.tomara.metrics
 
+import java.util.Date
+
 private const val MILLIS_IN_HOUR = 60 * 60 * 1000
 private const val MILLIS_IN_DAY = 24 * MILLIS_IN_HOUR
 private const val MILLIS_IN_WEEK = 7 * MILLIS_IN_DAY
 
-enum class MetricsCollectorOffsetType(val timeInMillis: Int) {
+enum class MetricsCollectorOffset(val timeInMillis: Int) {
     HOUR(MILLIS_IN_HOUR),
     DAY(MILLIS_IN_DAY),
     WEEK(MILLIS_IN_WEEK);
+
+    fun offsetFrom(date: Date): Date {
+        return Date(date.time - timeInMillis)
+    }
 
     companion object {
         @JvmStatic
@@ -16,7 +22,7 @@ enum class MetricsCollectorOffsetType(val timeInMillis: Int) {
         }
 
         @JvmStatic
-        fun parseCustom(value: String): MetricsCollectorOffsetType {
+        fun parseCustom(value: String): MetricsCollectorOffset {
             if(equalsIgnoreCase(value, "h")
             || equalsIgnoreCase(value, "hour")) {
                 return HOUR
