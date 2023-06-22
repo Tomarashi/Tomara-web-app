@@ -1,5 +1,9 @@
 @import url("../font/font.css");
 
+body {
+    background-color: rgba(154, 0, 0, 0.85);
+}
+
 .middle {
     position: absolute;
     width: fit-content;
@@ -8,6 +12,7 @@
     left: 50%;
     -webkit-transform: translate(-50%, -50%);
     transform: translate(-50%, -50%);
+    color: white;
 }
 
 .middle-text-top,
