@@ -92,9 +92,8 @@ class WordsRestController {
             }
 
             wordsOfferAddRepository.save(
-                WordsOfferAddEntity.from(
-                storeEntity,
-            ))
+                WordsOfferAddEntity.from(storeEntity),
+            )
             return ResponseEntity.ok(
                 SuccessMessageResponse(SUCCESS_MSG_ADD_OFFER_STORED),
             )
