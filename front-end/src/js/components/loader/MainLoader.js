@@ -1,4 +1,4 @@
-import "../../../css/main-loader.css";
+import "../../../css/loader/main-loader.css";
 import "../../../media/logo/logo-loader.png";
 import logo from "../../../media/logo/logo-loader-min.png";
 

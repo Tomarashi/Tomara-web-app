@@ -1,0 +1,47 @@
+@import "../../font/font.css";
+
+.web-metrics-box-container {
+    width: 100%;
+    height: 100%;
+    border-radius: 3px;
+    background-color: white;
+}
+
+.web-metrics-box-loader-wrapper {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.web-metrics-box-viewer {
+    position: relative;
+    width: 100%;
+    height: fit-content;
+}
+
+.web-metrics-box-viewer-header,
+.web-metrics-box-viewer-field {
+    padding: 0;
+    width: 82%;
+    margin: 0 0 0 9%;
+}
+
+.web-metrics-box-viewer-header {
+    color: grey;
+    font-size: 20px;
+    font-family: alk-sanet, sans-serif;
+}
+
+.web-metrics-box-viewer-field {
+    margin-top: 0;
+    margin-bottom: 0;
+    color: lightgrey;
+    font-family: bpg-arial, sans-serif;
+    font-size: 17px;
+}
+
+.web-metrics-box-viewer-field span {
+    color: black !important;
+}

@@ -1,0 +1,14 @@
+@import "../../font/font.css";
+
+.offers-monitor-view-container {
+    border-radius: 3px;
+    background-color: white;
+}
+
+.offers-monitor-view-loader-wrapper {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
