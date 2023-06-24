@@ -12,6 +12,7 @@ import ge.tomara.response.admin.OfferCountResponse
 import ge.tomara.response.admin.OfferCountResponseTotalOrDistinct
 import ge.tomara.response.admin.ValidCountResponse
 import ge.tomara.response.admin.OfferFrequencyResponse
+import ge.tomara.response.admin.OfferFrequencyResponseEntry
 import ge.tomara.response.admin.StatsTotalResponse
 import ge.tomara.response.admin.StatsTotalResponseViewsOrUniques
 import org.springframework.beans.factory.annotation.Autowired
@@ -65,11 +66,13 @@ class AdminRestController {
 
     @GetMapping("$OFFER_ROUTE_GROUP/add/frequency")
     fun getOfferAddFrequency(): OfferFrequencyResponse<String> {
-        val frequencyCounterByWord = LinkedHashMap<String, Int>()
+        val frequencyCounterByWord = mutableListOf<OfferFrequencyResponseEntry<String>>()
         for(entry in wordsOfferAddRepository.getOfferAddIdFrequency()) {
             val found = wordsOfferAddStoreRepository.findById(entry[0])
             if(found.isPresent) {
-                frequencyCounterByWord[found.get().wordGeo] = entry[1]
+                frequencyCounterByWord.add(OfferFrequencyResponseEntry(
+                    entry[0], found.get().wordGeo, entry[1],
+                ))
             }
         }
         return OfferFrequencyResponse(frequencyCounterByWord)
@@ -77,11 +80,13 @@ class AdminRestController {
 
     @GetMapping("$OFFER_ROUTE_GROUP/delete/frequency")
     fun getOfferDeleteFrequency(): OfferFrequencyResponse<String> {
-        val frequencyCounterByWord = LinkedHashMap<String, Int>()
+        val frequencyCounterByWord = mutableListOf<OfferFrequencyResponseEntry<String>>()
         for(entry in wordsOfferDeleteRepository.getOfferDeleteIdFrequency()) {
             val found = wordsRepository.findById(entry[0])
             if(found.isPresent) {
-                frequencyCounterByWord[found.get().wordGeo] = entry[1]
+                frequencyCounterByWord.add(OfferFrequencyResponseEntry(
+                    entry[0], found.get().wordGeo, entry[1],
+                ))
             }
         }
         return OfferFrequencyResponse(frequencyCounterByWord)
