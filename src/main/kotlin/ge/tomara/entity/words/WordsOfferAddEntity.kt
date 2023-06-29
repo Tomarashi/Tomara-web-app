@@ -12,7 +12,7 @@ import javax.persistence.Id
 import javax.persistence.Table
 
 @Entity
-@Table(name= WordsOfferAddRepository.DATABASE_NAME)
+@Table(name= WordsOfferAddRepository.TABLE_NAME)
 data class WordsOfferAddEntity(
     @Id()
     @GeneratedValue(strategy=GenerationType.IDENTITY)

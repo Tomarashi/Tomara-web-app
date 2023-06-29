@@ -1,5 +1,7 @@
 package ge.tomara.controllers
 
+import ge.tomara.constants.GEORGIAN_CHARACTERS
+import ge.tomara.constants.GEORGIAN_CHARACTER_ENG_EQUIVALENT
 import ge.tomara.constants.GLOBAL_GROUP
 import ge.tomara.repository.words.WordsDeletedRepository
 import ge.tomara.repository.words.WordsOfferAddRepository
@@ -15,6 +17,7 @@ import ge.tomara.response.words.WordResponse
 import ge.tomara.response.words.WordResponseType
 import ge.tomara.response.words.WordsFindResponse
 import ge.tomara.utils.mergeSortedLists
+import ge.tomara.utils.zipLists
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
@@ -33,8 +36,22 @@ class WordsRestController {
         const val SUCCESS_MSG_ADD_OFFER_STORED = "Offer to add is Stored"
         const val SUCCESS_MSG_DEL_OFFER_STORED = "Offer to delete is Stored"
 
+        @JvmStatic
         private val WORD_RESPONSE_COMPARATOR = Comparator<WordResponse> { a, b ->
             a.wordGeo.compareTo(b.wordGeo)
+        }
+
+        @JvmStatic
+        private val GEO_TO_ENG_CHAR_MAP = zipLists(
+            GEORGIAN_CHARACTERS.toList(),
+            GEORGIAN_CHARACTER_ENG_EQUIVALENT.toList(),
+        ).toMap()
+
+        @JvmStatic
+        private fun convertGeoToEngWord(word: String): String {
+            return word.toList().map { c ->
+                GEO_TO_ENG_CHAR_MAP[c]
+            }.joinToString("")
         }
     }
 
@@ -87,7 +104,10 @@ class WordsRestController {
             var storeEntity = wordsOfferAddStoreRepository.findByWordGeo(newWord)
             if(storeEntity == null) {
                 storeEntity = wordsOfferAddStoreRepository.save(
-                    WordsOfferAddStoreEntity(wordGeo = newWord),
+                    WordsOfferAddStoreEntity(
+                        wordGeo=newWord,
+                        wordEng=convertGeoToEngWord(newWord),
+                    ),
                 )
             }
 

@@ -33,3 +33,12 @@ fun <T> mergeSortedLists(
 fun <T> mergeSortedLists(firstList: List<T>, secondList: List<T>, comparator: Comparator<in T>): List<T> {
     return mergeSortedLists(firstList, secondList, null, comparator)
 }
+
+fun <K, V> zipLists(aList: List<K>, bList: List<V>): List<Pair<K, V>> {
+    val capacity = aList.size.coerceAtMost(bList.size)
+    return ArrayList<Pair<K, V>>(capacity).apply {
+        for(i in 0 until capacity) {
+            add(aList[i] to bList[i])
+        }
+    }
+}

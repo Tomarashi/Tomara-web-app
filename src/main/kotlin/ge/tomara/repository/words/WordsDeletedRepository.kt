@@ -13,8 +13,8 @@ interface WordsDeletedRepository: CrudRepository<WordsDeletedEntity, Int> {
     }
 
     @Query(value="SELECT * FROM $DATABASE_NAME WHERE del_word_geo LIKE %?1%", nativeQuery=true)
-    fun findByDelGeoWordContains(subGeoWord: String): List<WordsEntity>
+    fun findByDelGeoWordContains(subGeoWord: String): List<WordsDeletedEntity>
 
     @Query(value="SELECT * FROM $DATABASE_NAME WHERE del_word_geo LIKE %?1% LIMIT ?2", nativeQuery=true)
-    fun findByDelGeoWordContains(subGeoWord: String, nLimit: Int): List<WordsEntity>
+    fun findByDelGeoWordContains(subGeoWord: String, nLimit: Int): List<WordsDeletedEntity>
 }

@@ -1,6 +1,7 @@
 package ge.tomara.response.words
 
 import com.fasterxml.jackson.annotation.JsonProperty
+import ge.tomara.entity.words.WordsDeletedEntity
 import ge.tomara.entity.words.WordsEntity
 
 data class WordResponse(
@@ -13,6 +14,14 @@ data class WordResponse(
             return WordResponse(
                 entity.id,
                 entity.wordGeo,
+                type,
+            )
+        }
+
+        fun from(entity: WordsDeletedEntity, type: WordResponseType = WordResponseType.UNKNOWN): WordResponse {
+            return WordResponse(
+                entity.delWordId,
+                entity.delWordGeo,
                 type,
             )
         }

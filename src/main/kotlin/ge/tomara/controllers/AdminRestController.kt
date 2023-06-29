@@ -1,6 +1,8 @@
 package ge.tomara.controllers
 
 import ge.tomara.constants.GLOBAL_GROUP
+import ge.tomara.entity.words.WordsDeletedEntity
+import ge.tomara.entity.words.WordsEntity
 import ge.tomara.metrics.MetricsCollectorHolder
 import ge.tomara.metrics.MetricsCollectorOffset
 import ge.tomara.repository.words.WordsDeletedRepository
@@ -15,11 +17,18 @@ import ge.tomara.response.admin.OfferFrequencyResponse
 import ge.tomara.response.admin.OfferFrequencyResponseEntry
 import ge.tomara.response.admin.StatsTotalResponse
 import ge.tomara.response.admin.StatsTotalResponseViewsOrUniques
+import ge.tomara.response.general.ErrorMessageResponse
+import ge.tomara.response.general.SuccessMessageResponse
+import ge.tomara.utils.TypeUtils
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 import java.util.Date
+import java.util.concurrent.locks.ReentrantLock
 
 @RestController
 @RequestMapping("$GLOBAL_GROUP/admin")
@@ -28,7 +37,14 @@ class AdminRestController {
         private const val STATISTICS_ROUTE_GROUP = "/statistics"
         private const val OFFER_ROUTE_GROUP = "/offer"
         private const val WEB_METRICS_ROUTE_GROUP = "/web-metrics"
+
+        private const val SUCCESS_ADD_OR_DELETE = 1
+        private const val ERROR_ADD_OR_DELETE_NO_ID = -1
+        private const val ERROR_ADD_OR_DELETE_BAD_DECISION = -2
     }
+
+    private val addOfferResolveLock = ReentrantLock()
+    private val deleteOfferResolveLock = ReentrantLock()
 
     private val timeMetrics = MetricsCollectorHolder.getTimeMetrics()
     private val sessionMetrics = MetricsCollectorHolder.getSessionMetrics()
@@ -90,6 +106,77 @@ class AdminRestController {
             }
         }
         return OfferFrequencyResponse(frequencyCounterByWord)
+    }
+
+    @PostMapping("$OFFER_ROUTE_GROUP/resolve/add")
+    fun resolveOfferAdd(
+        @RequestParam("id") valueId: Int,
+        @RequestParam("decision") decisionStr: String,
+    ): ResponseEntity<Any> {
+        val decision = try {
+            TypeUtils.parseBoolean(decisionStr)
+        } catch (e: NumberFormatException) {
+            return ResponseEntity.badRequest().body(
+                ErrorMessageResponse(
+                    ERROR_ADD_OR_DELETE_BAD_DECISION,
+                    "Can't convert decision ('${decisionStr}') to boolean")
+            )
+        }
+
+        synchronized(addOfferResolveLock) {
+            val wordsStoreEntity = wordsOfferAddStoreRepository.findById(valueId)
+            if(wordsStoreEntity.isEmpty) {
+                return ResponseEntity.badRequest().body(
+                    ErrorMessageResponse(ERROR_ADD_OR_DELETE_NO_ID, "ID doesn't exist")
+                )
+            }
+
+            if(decision) {
+                val frequency = wordsOfferAddRepository.getOfferAddIdFrequency(valueId)
+                wordsRepository.save(WordsEntity.from(
+                    wordsStoreEntity.get(), frequency,
+                ))
+            }
+            wordsOfferAddRepository.deleteAllByOfferAddId(valueId)
+            wordsOfferAddStoreRepository.deleteById(valueId)
+            return ResponseEntity.ok(SuccessMessageResponse(
+                SUCCESS_ADD_OR_DELETE, "Add offer ${if(decision) "accepted" else "rejected"}"
+            ))
+        }
+    }
+
+    @PostMapping("$OFFER_ROUTE_GROUP/resolve/delete")
+    fun resolveOfferDelete(
+        @RequestParam("id") valueId: Int,
+        @RequestParam("decision") decisionStr: String,
+    ): ResponseEntity<Any> {
+        val decision = try {
+            TypeUtils.parseBoolean(decisionStr)
+        } catch (_: NumberFormatException) {
+            return ResponseEntity.badRequest().body(
+                ErrorMessageResponse(
+                    ERROR_ADD_OR_DELETE_BAD_DECISION,
+                    "Can't convert decision ('${decisionStr}') to boolean")
+            )
+        }
+
+        synchronized(deleteOfferResolveLock) {
+            val wordsEntity = wordsRepository.findById(valueId)
+            if(wordsEntity.isEmpty) {
+                return ResponseEntity.badRequest().body(
+                    ErrorMessageResponse(ERROR_ADD_OR_DELETE_NO_ID, "ID doesn't exist")
+                )
+            }
+
+            wordsOfferDeleteRepository.deleteAllByOfferDeleteId(valueId)
+            if(decision) {
+                wordsRepository.deleteById(valueId)
+                wordsDeletedRepository.save(WordsDeletedEntity.from(wordsEntity.get()))
+            }
+            return ResponseEntity.ok(SuccessMessageResponse(
+                SUCCESS_ADD_OR_DELETE, "Delete offer ${if(decision) "accepted" else "rejected"}"
+            ))
+        }
     }
 
     @GetMapping("$WEB_METRICS_ROUTE_GROUP/total")
