@@ -1,14 +1,141 @@
 @import "../../font/font.css";
 
 .offers-monitor-view-container {
-    border-radius: 3px;
+    display: grid;
+    width: 750px;
+    height: 450px;
+    border-radius: 5px;
     background-color: white;
+    overflow: hidden;
+    grid-template-rows: 8% 92%;
+    grid-template-columns: 50% 50%;
 }
 
 .offers-monitor-view-loader-wrapper {
+    grid-row: span 2;
+    grid-column: span 2;
+}
+
+.offers-monitor-view-offer-header {
     width: 100%;
     height: 100%;
+    grid-column: span 2;
+}
+
+.offers-monitor-view-offer-reload {
+    position: relative;
+    outline: none;
+    border: none;
+    border-radius: 8px;
+    background-color: rgba(154, 0, 0, 0.7);
+    font-family: alk-sanet, sans-serif;
+    color: white;
+    padding: 8px;
+    cursor: pointer;
+    top: 50%;
+    left: 8px;
+    -webkit-transform: translate(0, -50%);
+}
+
+.offers-monitor-view-offer-reload:hover {
+    background-color: rgba(154, 0, 0, 1);
+}
+
+.offers-monitor-view-offer-add,
+.offers-monitor-view-offer-delete {
+    width: 100%;
+    height: 100%;
+}
+
+.offers-monitor-view-offer-header-name,
+.offers-monitor-view-count-info {
+    width: 100%;
+    padding: 0;
+    margin: 0;
+    text-align: center;
+    font-family: bpg-arial, sans-serif;
+    color: grey;
+}
+
+.offers-monitor-view-offer-header-name {
+    font-size: 20px;
+}
+
+.offers-monitor-view-count-info {
+    font-size: 12px;
+}
+
+.offers-monitor-view-entry-table {
+    margin-top: 5%;
+    margin-left: 5%;
+    width: 90%;
+    max-height: 80%;
+    font-family: bpg-arial, sans-serif;
+    border-collapse: collapse;
+    overflow: auto;
+}
+
+.offers-monitor-view-entry-table th,
+.offers-monitor-view-entry-table td {
+    border: 1px solid white;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    padding: 6px;
+}
+
+.offers-monitor-view-entry-table th {
+    height: 30px;
+    background-color: rgba(154, 0, 0, 0.8);
+    color: white;
+    border-radius: 1px;
+    font-size: 16px;
+}
+
+.offers-monitor-view-entry-table tr:nth-child(even) {
+    background-color: rgba(250, 250, 250);
+}
+.offers-monitor-view-entry-table tr:nth-child(odd) {
+    background-color: rgba(230, 230, 230);
+}
+
+.offers-monitor-view-entry-table th:nth-child(1),
+.offers-monitor-view-entry-table td:nth-child(1) {
+    width: 50%;
+}
+.offers-monitor-view-entry-table th:nth-child(2),
+.offers-monitor-view-entry-table td:nth-child(2) {
+    width: 20%;
+}
+.offers-monitor-view-entry-table th:nth-child(3),
+.offers-monitor-view-entry-table td:nth-child(3) {
+    width: 20%;
+}
+
+.offers-monitor-view-entry {
+    width: 100%;
+    height: fit-content;
+    grid-template-columns: 60% 10% 25%;
+}
+
+.offers-monitor-view-entry-action {
     display: flex;
-    justify-content: center;
-    align-items: center;
+}
+
+.offers-monitor-view-entry-action-yes,
+.offers-monitor-view-entry-action-no {
+    color: white;
+    margin: auto;
+    display: block;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    width: 60px;
+}
+
+.offers-monitor-view-entry-action-yes {
+    background-color: rgba(0, 255, 0, 1);
+}
+
+.offers-monitor-view-entry-action-no {
+    background-color: rgba(255, 0, 0, 1);
 }

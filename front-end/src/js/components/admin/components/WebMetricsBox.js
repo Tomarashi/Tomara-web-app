@@ -1,6 +1,6 @@
 import "../../../../css/admin/web-metrics.css";
 import {useEffect, useState} from "react";
-import FacebookLoader from "../../loader/FacebookLoader";
+import {FacebookLoaderWrapped} from "../../loader/FacebookLoader";
 
 const WeekDayHourViewer = function (props) {
     return (
@@ -43,31 +43,22 @@ const WebMetricsBox = function () {
 
     return (
         <div className="web-metrics-box-container">
-            {(() => {
-                if(loading) {
-                    return (
-                        <div className="web-metrics-box-loader-wrapper">
-                            <FacebookLoader />
-                        </div>
-                    );
-                }
-                return (
-                    <>
-                        <div style={{height: "18px"}} />
-                        <WeekDayHourViewer
-                            header="ვიზიტები"
-                            total={metrics.views.total}
-                            week={metrics.views.week}
-                            day={metrics.views.day} />
-                        <div style={{height: "20px"}} />
-                        <WeekDayHourViewer
-                            header="უნიკალური მომხმარებლები"
-                            total={metrics.uniques.total}
-                            week={metrics.uniques.week}
-                            day={metrics.uniques.day} />
-                    </>
-                );
-            })()}
+            {(loading)? <FacebookLoaderWrapped />: (
+                <>
+                    <div style={{height: "18px"}} />
+                    <WeekDayHourViewer
+                        header="ვიზიტები"
+                        total={metrics.views.total}
+                        week={metrics.views.week}
+                        day={metrics.views.day} />
+                    <div style={{height: "20px"}} />
+                    <WeekDayHourViewer
+                        header="უნიკალური მომხმარებლები"
+                        total={metrics.uniques.total}
+                        week={metrics.uniques.week}
+                        day={metrics.uniques.day} />
+                </>
+            )}
         </div>
     );
 };

@@ -7,14 +7,6 @@
     background-color: white;
 }
 
-.web-metrics-box-loader-wrapper {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
 .web-metrics-box-viewer {
     position: relative;
     width: 100%;

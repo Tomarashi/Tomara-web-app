@@ -15,7 +15,7 @@ import {WordMetadataWrapper} from "./WordMetadataWrapper";
 import StringsSet from "../../utils/StringSet";
 
 
-const INPUT_PLACEHOLDER_VALUE = "აკრიფე...";
+const INPUT_PLACEHOLDER_VALUE = "მოძებნე...";
 const ADD_WORD_TO_DICT_MESSAGE = "დაამატე სიტყვა";
 const FIND_N_LIMIT = 500;
 
@@ -133,10 +133,12 @@ const WordsEdit = function () {
         const url = API_WORD_OFFER_ADD + encodeUrlParams({
             "new_word": getInputValue(),
         });
-        fetch(url)
+        fetch(url, {
+            method: "post",
+        })
             .then(res => res.json())
-            .then((data) => {
-                console.log(data);
+            .then(_ => {
+                alert("სიტყვის დამატების მოთხოვნა წარმატებით გაიგზავნა");
             })
             .catch((err) => {
                 console.error(err);

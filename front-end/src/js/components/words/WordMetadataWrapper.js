@@ -39,8 +39,8 @@ export const WordMetadataWrapper = function(wordResponse) {
         fetch(url, {
             method: "POST"
         }).then(res => res.json())
-            .then(data => {
-                console.log(data)
+            .then(_ => {
+                alert("წაშლის მოთხოვნა წარმატებით გაიგზავნა");
             })
             .catch(err => {
                 console.error(err);
@@ -52,7 +52,7 @@ export const WordMetadataWrapper = function(wordResponse) {
             return (
                 <div className="words-edit-response-list-item-config-valid">
                     <button onClick={deleteOffer}>
-                        <i className="fa fa-trash"></i> Offer Delete
+                        <i className="fa fa-trash"></i> წაშლის მოთხოვნა
                     </button>
                 </div>
             );
