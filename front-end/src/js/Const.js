@@ -1,4 +1,6 @@
-export const APP_TITLE = "Tomara";
+export const APP_TITLE = "ტომარა";
+export const APP_TITLE_ENG = "Tomara";
+export const APP_TITLE_FULL = APP_TITLE + " | " + APP_TITLE_ENG;
 export const TOMARA_MAIN_RED = "#9A0000";
 
 export const API_GROUP_NAME = "/api";

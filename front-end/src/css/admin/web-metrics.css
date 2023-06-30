@@ -2,7 +2,7 @@
 
 .web-metrics-box-container {
     width: 100%;
-    height: 100%;
+    height: fit-content;
     border-radius: 3px;
     background-color: white;
 }
@@ -14,26 +14,43 @@
 }
 
 .web-metrics-box-viewer-header,
-.web-metrics-box-viewer-field {
+.web-metrics-box-active-sessions-header,
+.web-metrics-box-viewer-field,
+.web-metrics-box-active-sessions-field {
     padding: 0;
     width: 82%;
     margin: 0 0 0 9%;
 }
 
-.web-metrics-box-viewer-header {
-    color: grey;
-    font-size: 20px;
+.web-metrics-box-viewer-header,
+.web-metrics-box-active-sessions-header {
+    color: rgb(140, 140, 140);
+    font-size: 19px;
     font-family: alk-sanet, sans-serif;
 }
 
-.web-metrics-box-viewer-field {
+.web-metrics-box-viewer-field,
+.web-metrics-box-active-sessions-field {
     margin-top: 0;
     margin-bottom: 0;
-    color: lightgrey;
+    color: rgb(180, 180, 180);
     font-family: bpg-arial, sans-serif;
-    font-size: 17px;
+    font-size: 16px;
 }
 
 .web-metrics-box-viewer-field span {
     color: black !important;
+}
+
+.web-metrics-box-active-sessions-container {
+    height: fit-content;
+}
+.web-metrics-box-active-sessions-header {
+    font-size: 20px;
+}
+.web-metrics-box-active-sessions-field {
+    font-size: 17px;
+}
+.web-metrics-box-active-sessions-field i {
+    font-size: 15px;
 }

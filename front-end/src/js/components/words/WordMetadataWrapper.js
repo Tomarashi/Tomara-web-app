@@ -52,7 +52,7 @@ export const WordMetadataWrapper = function(wordResponse) {
             return (
                 <div className="words-edit-response-list-item-config-valid">
                     <button onClick={deleteOffer}>
-                        <i className="fa fa-trash"></i> წაშლის მოთხოვნა
+                        <i className="fa fa-trash"></i> <span>წაშლის მოთხოვნა</span>
                     </button>
                 </div>
             );

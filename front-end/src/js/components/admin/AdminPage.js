@@ -7,14 +7,13 @@ const AdminPage = function() {
     return (
         <div className="admin-content-background">
             <div className="admin-content-background-left">
-                <div className="admin-content-background-left-column">
+                <TabsWrapper />
+            </div>
+            <div className="admin-content-background-right">
+                <div className="admin-content-background-right-column">
                     <WebMetricsBox />
                     <LogoutButton />
                 </div>
-            </div>
-            <div />
-            <div className="admin-content-background-right">
-                <TabsWrapper />
             </div>
         </div>
     );

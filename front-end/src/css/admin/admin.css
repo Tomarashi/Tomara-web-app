@@ -9,31 +9,27 @@
     width: 100vw;
     height: 100vh;
     background-color: whitesmoke;
-    display: grid;
-    grid-template-columns: 19% 1% 80%;
+    display: flex;
 }
 
 .admin-content-background-left,
 .admin-content-background-right {
     position: relative;
-    margin-top: 10px;
-    width: calc(100% - var(--default-grid-offset));
+    margin-top: var(--default-grid-offset);
     height: calc(100% - 2 * var(--default-grid-offset));
 }
 
 .admin-content-background-left {
+    width: calc(82% - var(--default-grid-offset));
     margin-left: var(--default-grid-offset);
 }
 
 .admin-content-background-right {
-    margin-right: var(--default-grid-offset);
-    float: right;
+    width: calc(18% - 2 * var(--default-grid-offset));
+    margin-left: var(--default-grid-offset);
 }
 
-.admin-content-background-left-column {
-    display: grid;
+.admin-content-background-right-column {
     width: 100%;
     height: 100%;
-    grid-template-rows: 240px 1fr;
-    grid-gap: var(--default-grid-offset);
 }

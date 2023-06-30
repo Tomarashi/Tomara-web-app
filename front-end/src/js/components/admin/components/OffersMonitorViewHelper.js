@@ -21,7 +21,15 @@ class OfferFrequencyResponseEntry {
 const OffersMonitorViewCountInfo = function (props) {
     return (
         <div style={{marginTop: 5}} className="offers-monitor-view-count-info">
-            ჯამი - {props.total}, უნიკალური - {props.distinct}
+            ჯამი: {props.total}, უნიკალური: {props.distinct}
+        </div>
+    );
+};
+
+const OffersMonitorViewOfferEmptyTableFiller = function () {
+    return (
+        <div className="offers-monitor-view-entry-table-empty-filler">
+            შედეგი არ არის
         </div>
     );
 };
@@ -50,9 +58,8 @@ class AbstractOffersMonitorViewOffer extends React.Component {
         if(!AbstractOffersMonitorViewOffer._VALID_TYPES.includes(this.type)) {
             throw new Error(`Invalid type: '${this.type}'`);
         }
-        this.state = {
-            list: this._checkAndGet(props, "list"),
-        };
+        this.list = this._checkAndGet(props, "list");
+        this.callListener = props["listener"] || function() {};
     }
 
     _checkAndGet(props, fieldName) {
@@ -88,12 +95,8 @@ class AbstractOffersMonitorViewOffer extends React.Component {
                     return data;
                 })
                 .then(data => {
-                    this.setState({
-                        list: this.state.list.filter(entry => {
-                            return entry.offerId !== valueId;
-                        }),
-                    });
                     const getResponseMsgMap = AbstractOffersMonitorViewOffer._getResponseMsgMap;
+                    this.callListener();
                     alert(getResponseMsgMap(data["success_msg"] || ""));
                 })
                 .catch(console.error);
@@ -102,35 +105,50 @@ class AbstractOffersMonitorViewOffer extends React.Component {
 
     render() {
         return (
-            <table className="offers-monitor-view-entry-table">
-                <tr>
-                    <th>სიტყვა</th><th>#</th><th>ქმედება</th>
-                </tr>
-                {this.state.list.map((entry) => {
-                    return (
-                        <tr className="offers-monitor-view-entry">
-                            <td>{entry.word}</td>
-                            <td align="right">{entry.frequency}</td>
-                            <td className="offers-monitor-view-entry-action">
-                                <button
-                                    title="დადასტურება"
-                                    onClick={() => this._invokeDecision(entry.offerId, true)}
-                                    style={{marginLeft: 5}}
-                                    className="offers-monitor-view-entry-action-yes">
-                                    <i className="fa fa-check" />
-                                </button>
-                                <button
-                                    title="უარყოფა"
-                                    onClick={() => this._invokeDecision(entry.offerId, false)}
-                                    style={{marginLeft: 10}}
-                                    className="offers-monitor-view-entry-action-no">
-                                    <i className="fa fa-remove" />
-                                </button>
-                            </td>
-                        </tr>
-                    );
-                })}
-            </table>
+            <div className="offers-monitor-view-entry-table-wrapper">
+                <div className="offers-monitor-view-entry-table">
+                    <div className="offers-monitor-view-entry-table-header-row">
+                        <div className="offers-monitor-view-entry-table-header-cell">#</div>
+                        <div className="offers-monitor-view-entry-table-header-cell">სიტყვა</div>
+                        <div className="offers-monitor-view-entry-table-header-cell">Qty.</div>
+                        <div className="offers-monitor-view-entry-table-header-cell">ქმედება</div>
+                    </div>
+                    <div className="offers-monitor-view-entry-table-rows">
+                        {(this.list.length === 0)? (
+                            <OffersMonitorViewOfferEmptyTableFiller />
+                        ): this.list.map((entry, i) => {
+                            return (
+                                <div className="offers-monitor-view-entry-table-row">
+                                    <div className="offers-monitor-view-entry-table-cell" align="center">
+                                        {i + 1}
+                                    </div>
+                                    <div className="offers-monitor-view-entry-table-cell">
+                                        {entry.word || "aaa"}
+                                    </div>
+                                    <div className="offers-monitor-view-entry-table-cell" align="right">
+                                        {entry.frequency}
+                                    </div>
+                                    <div className="offers-monitor-view-entry-table-cell" align="center">
+                                        <button
+                                            title="დადასტურება"
+                                            className="offers-monitor-view-entry-table-cell-action-yes"
+                                            onClick={() => this._invokeDecision(entry.offerId, true)}>
+                                            <i className="fa fa-check" />
+                                        </button>
+                                        <button
+                                            title="უარყოფა"
+                                            className="offers-monitor-view-entry-table-cell-action-no"
+                                            onClick={() => this._invokeDecision(entry.offerId, false)}
+                                            style={{marginLeft: 10}}>
+                                            <i className="fa fa-remove" />
+                                        </button>
+                                    </div>
+                                </div>
+                            );
+                        })}
+                    </div>
+                </div>
+            </div>
         );
     }
 }

@@ -48,19 +48,25 @@ const OffersMonitorView = function () {
             });
     };
 
+    const updateListener = () => {
+        setLoading(true);
+        fetchDataSync();
+    };
+
     useEffect(fetchDataSync, []);
 
     return (
         <div className="offers-monitor-view-container">
-            {(loading)? <FacebookLoaderWrapped className="offers-monitor-view-loader-wrapper" />: (
+            {(loading)? <FacebookLoaderWrapped />: (
                 <>
-                    <div className="offers-monitor-view-offer-header">
-                        <button
-                            className="offers-monitor-view-offer-reload"
-                            onClick={fetchDataSync}>
-                            განახლება
-                        </button>
-                    </div>
+                <div className="offers-monitor-view-offer-header">
+                    <button
+                        className="offers-monitor-view-offer-reload"
+                        onClick={updateListener}>
+                        განახლება
+                    </button>
+                </div>
+                <div className="offers-monitor-view-container-lower">
                     <div className="offers-monitor-view-offer-add">
                         <div className="offers-monitor-view-offer-header-name">
                             დამატება
@@ -69,6 +75,7 @@ const OffersMonitorView = function () {
                             total={values.addOffer.total}
                             distinct={values.addOffer.distinct} />
                         <OffersMonitorViewAddOffer
+                            listener={updateListener}
                             list={values.addFrequency} />
                     </div>
                     <div className="offers-monitor-view-offer-delete">
@@ -79,8 +86,10 @@ const OffersMonitorView = function () {
                             total={values.deleteOffer.total}
                             distinct={values.deleteOffer.distinct} />
                         <OffersMonitorViewDeleteOffer
+                            listener={updateListener}
                             list={values.deleteFrequency} />
                     </div>
+                </div>
                 </>
             )}
         </div>
