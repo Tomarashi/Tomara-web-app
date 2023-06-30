@@ -1,5 +1,6 @@
 package ge.tomara.controllers
 
+import ge.tomara.config.HttpSessionListenerWrapper
 import ge.tomara.constants.GLOBAL_GROUP
 import ge.tomara.entity.words.WordsDeletedEntity
 import ge.tomara.entity.words.WordsEntity
@@ -10,6 +11,7 @@ import ge.tomara.repository.words.WordsOfferAddRepository
 import ge.tomara.repository.words.WordsOfferAddStoreRepository
 import ge.tomara.repository.words.WordsOfferDeleteRepository
 import ge.tomara.repository.words.WordsRepository
+import ge.tomara.response.admin.ActiveSessionCount
 import ge.tomara.response.admin.OfferCountResponse
 import ge.tomara.response.admin.OfferCountResponseTotalOrDistinct
 import ge.tomara.response.admin.ValidCountResponse
@@ -177,6 +179,12 @@ class AdminRestController {
                 SUCCESS_ADD_OR_DELETE, "Delete offer ${if(decision) "accepted" else "rejected"}"
             ))
         }
+    }
+
+    @GetMapping("$WEB_METRICS_ROUTE_GROUP/active-session/count")
+    fun getActiveSessionCount(): ActiveSessionCount {
+        val count = HttpSessionListenerWrapper.getActiveSessionsSize()
+        return ActiveSessionCount(count)
     }
 
     @GetMapping("$WEB_METRICS_ROUTE_GROUP/total")

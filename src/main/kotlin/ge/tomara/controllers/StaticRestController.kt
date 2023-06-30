@@ -1,5 +1,6 @@
 package ge.tomara.controllers
 
+import ge.tomara.controllers.RequestURLUtils.Companion.isAdminPrefix
 import ge.tomara.metrics.MetricsCollectorHolder
 import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.GetMapping
@@ -13,7 +14,7 @@ class StaticRestController {
 
     @GetMapping(value=["/", "/admin"])
     fun index(request: HttpServletRequest): String {
-        if(!request.requestURI.startsWith("/admin")) {
+        if(!isAdminPrefix(request.requestURI)) {
             timeMetrics.storeTimePoint()
             sessionMetrics.storeSession(
                 RequestContextHolder.currentRequestAttributes().sessionId,
