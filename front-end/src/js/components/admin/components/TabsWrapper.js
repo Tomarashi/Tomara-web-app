@@ -1,8 +1,22 @@
 import "../../../../css/admin/tabs-wrapper.css";
+import React from "react";
 import {Tab, TabList, TabPanel, Tabs} from "react-tabs";
 import OffersMonitorView from "./OffersMonitorView";
 import WordsEdit from "../../words/WordsEdit";
 import ReviewView from "./ReviewView";
+
+const TabsContentCenter = function (props) {
+    const children = React.Children.toArray(props.children);
+    if(children.length !== 1) {
+        throw new Error("Component should contain only one child");
+    }
+
+    return (
+        <div className="tabs-wrapper-background-tab-content-center">
+            {children}
+        </div>
+    );
+};
 
 const TabsWrapper = function () {
     return (
@@ -16,15 +30,19 @@ const TabsWrapper = function () {
                 <Tab>მიმოხილვები</Tab>
             </TabList>
             <TabPanel>
-                <OffersMonitorView />
+                <TabsContentCenter>
+                    <OffersMonitorView />
+                </TabsContentCenter>
             </TabPanel>
             <TabPanel>
-                <div style={{margin: 0, width: "100%", height: "100%"}}>
+                <TabsContentCenter>
                     <WordsEdit />
-                </div>
+                </TabsContentCenter>
             </TabPanel>
             <TabPanel>
-                <ReviewView />
+                <TabsContentCenter>
+                    <ReviewView />
+                </TabsContentCenter>
             </TabPanel>
         </Tabs>
     );
