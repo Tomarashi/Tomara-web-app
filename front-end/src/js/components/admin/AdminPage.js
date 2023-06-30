@@ -1,7 +1,7 @@
 import "../../../css/admin/admin.css";
-import WebMetricsBox from "./components/WebMetricsBox";
-import LogoutButton from "./components/LogoutButton";
-import TabsWrapper from "./components/TabsWrapper";
+import WebMetricsBox from "./sub/WebMetricsBox";
+import LogoutButton from "./sub/LogoutButton";
+import TabsWrapper from "./sub/TabsWrapper";
 
 const AdminPage = function() {
     return (
