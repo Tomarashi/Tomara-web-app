@@ -1,6 +1,8 @@
+import "../../../../css/admin/review-view.css";
+
 const ReviewView = function () {
     return (
-        <div></div>
+        <div className="review-view-container"></div>
     );
 };
 

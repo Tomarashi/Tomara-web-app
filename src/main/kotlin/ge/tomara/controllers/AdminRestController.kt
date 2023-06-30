@@ -6,6 +6,7 @@ import ge.tomara.entity.words.WordsDeletedEntity
 import ge.tomara.entity.words.WordsEntity
 import ge.tomara.metrics.MetricsCollectorHolder
 import ge.tomara.metrics.MetricsCollectorOffset
+import ge.tomara.repository.reviews.ReviewsRepository
 import ge.tomara.repository.words.WordsDeletedRepository
 import ge.tomara.repository.words.WordsOfferAddRepository
 import ge.tomara.repository.words.WordsOfferAddStoreRepository
@@ -21,6 +22,7 @@ import ge.tomara.response.admin.StatsTotalResponse
 import ge.tomara.response.admin.StatsTotalResponseViewsOrUniques
 import ge.tomara.response.general.ErrorMessageResponse
 import ge.tomara.response.general.SuccessMessageResponse
+import ge.tomara.response.reviews.GetReviewsResponse
 import ge.tomara.utils.TypeUtils
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
@@ -39,6 +41,7 @@ class AdminRestController {
         private const val STATISTICS_ROUTE_GROUP = "/statistics"
         private const val OFFER_ROUTE_GROUP = "/offer"
         private const val WEB_METRICS_ROUTE_GROUP = "/web-metrics"
+        private const val REVIEW_ROUTE_GROUP = "/review"
 
         private const val SUCCESS_ADD_OR_DELETE = 1
         private const val ERROR_ADD_OR_DELETE_NO_ID = -1
@@ -61,6 +64,8 @@ class AdminRestController {
     private lateinit var wordsOfferDeleteRepository: WordsOfferDeleteRepository
     @Autowired
     private lateinit var wordsOfferAddStoreRepository: WordsOfferAddStoreRepository
+    @Autowired
+    private lateinit var reviewsRepository: ReviewsRepository
 
     @GetMapping("$STATISTICS_ROUTE_GROUP/count")
     fun getValidTypeCount(): ValidCountResponse {
@@ -203,6 +208,30 @@ class AdminRestController {
             day=sessionMetrics.getMetricFrom(dayDate)
         )
         return StatsTotalResponse(views=times, uniques=sessions)
+    }
+
+    @GetMapping("$REVIEW_ROUTE_GROUP/values")
+    fun getReviews(
+        @RequestParam("start") start: Int?,
+        @RequestParam("end") end: Int?,
+    ): GetReviewsResponse {
+        val reviews = if(start == null && end == null) {
+            reviewsRepository.findAll()
+        } else if(end == null) {
+            reviewsRepository.getReviewsInRange(start!!, Int.MAX_VALUE)
+        } else if(start == null) {
+            reviewsRepository.getReviewsInRange(0, end)
+        } else {
+            var n = end - start
+            if(n < 0) n = 0
+            reviewsRepository.getReviewsInRange(start, n)
+        }
+        return GetReviewsResponse.from(reviews.toList())
+    }
+
+    @GetMapping("$REVIEW_ROUTE_GROUP/count")
+    fun getReviewsCount(): Int {
+        return reviewsRepository.count().toInt()
     }
 
 }
