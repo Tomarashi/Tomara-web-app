@@ -1,4 +1,4 @@
-import "../../../css/words-edit.css";
+import "../../../css/words/words-edit.css";
 import {useRef, useState} from "react";
 import {encodeUrlParams} from "../../utils/url-functions";
 import {randomAsciiLetters} from "../../utils/random-functions";

@@ -20,26 +20,25 @@ class SpringBootMappingsListener: ApplicationListener<ContextRefreshedEvent> {
     }
 
     override fun onApplicationEvent(event: ContextRefreshedEvent) {
-        val methodsRoutesList = mutableListOf<Pair<RequestMethod, String>>().apply {
-            val handlerMethods = event
-                .applicationContext
-                .getBean(RequestMappingHandlerMapping::class.java)
-                .handlerMethods
-
-            for(mapping in handlerMethods) {
+        val methodsRoutesList = mutableListOf<Pair<RequestMethod, String>>()
+        event
+            .applicationContext
+            .getBean(RequestMappingHandlerMapping::class.java)
+            .handlerMethods
+            .forEach { mapping ->
                 val methods = mapping.key.methodsCondition.methods
                 val directPaths = mapping.key.directPaths
                 for(method in methods) {
                     for(path in directPaths) {
-                        add(Pair(method, path))
+                        methodsRoutesList.add(Pair(method, path))
                     }
                 }
             }
-        }
 
         methodsRoutesList.sortWith { a, b ->
-            if(a.first == b.first) {
-                a.second.compareTo(b.second)
+            val compared = a.second.compareTo(b.second)
+            if(compared != 0) {
+                compared
             } else {
                 val aMethod = methodsOrderedMap[a.first] ?: Int.MIN_VALUE
                 val bMethod = methodsOrderedMap[b.first] ?: Int.MIN_VALUE

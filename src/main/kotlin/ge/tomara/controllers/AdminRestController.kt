@@ -21,10 +21,14 @@ import ge.tomara.response.admin.OfferFrequencyResponseEntry
 import ge.tomara.response.admin.StatsTotalResponse
 import ge.tomara.response.admin.StatsTotalResponseViewsOrUniques
 import ge.tomara.response.general.ErrorMessageResponse
+import ge.tomara.response.general.IMessageResponse
+import ge.tomara.response.general.RequiredParamMessageResponse
 import ge.tomara.response.general.SuccessMessageResponse
+import ge.tomara.response.reviews.GetReviewsCountResponse
 import ge.tomara.response.reviews.GetReviewsResponse
 import ge.tomara.utils.TypeUtils
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
@@ -210,28 +214,52 @@ class AdminRestController {
         return StatsTotalResponse(views=times, uniques=sessions)
     }
 
-    @GetMapping("$REVIEW_ROUTE_GROUP/values")
+    @GetMapping("$REVIEW_ROUTE_GROUP/page")
     fun getReviews(
-        @RequestParam("start") start: Int?,
-        @RequestParam("end") end: Int?,
-    ): GetReviewsResponse {
-        val reviews = if(start == null && end == null) {
-            reviewsRepository.findAll()
-        } else if(end == null) {
-            reviewsRepository.getReviewsInRange(start!!, Int.MAX_VALUE)
-        } else if(start == null) {
-            reviewsRepository.getReviewsInRange(0, end)
-        } else {
-            var n = end - start
-            if(n < 0) n = 0
-            reviewsRepository.getReviewsInRange(start, n)
+        @RequestParam("index") pageIndex: Int?,
+        @RequestParam("size") pageSize: Int?,
+    ): ResponseEntity<Any> {
+        if(pageIndex == null || pageSize == null) {
+            val paramName = if(pageIndex == null) "index" else "size"
+            return ResponseEntity.badRequest().body(
+                RequiredParamMessageResponse(paramName),
+            )
         }
-        return GetReviewsResponse.from(reviews.toList())
+        if(pageIndex < 0 || pageSize < 1) {
+            val paramName = if(pageIndex < 0) "index" else "size"
+            val paramValue = if(pageIndex < 0) pageIndex else pageSize
+            return ResponseEntity.badRequest().body(
+                ErrorMessageResponse("Invalid value for '$paramName': $paramValue")
+            )
+        }
+
+        val offset = pageSize * pageIndex
+        val reviews = reviewsRepository.getReviewsInRange(offset, pageSize)
+        return ResponseEntity.ok(GetReviewsResponse.from(reviews))
+    }
+
+    @PostMapping("$REVIEW_ROUTE_GROUP/delete")
+    fun deleteReviewWithId(@RequestParam("id") reviewId: Int?): ResponseEntity<IMessageResponse> {
+        if(reviewId == null) {
+            return ResponseEntity.badRequest().body(
+                RequiredParamMessageResponse("id"),
+            )
+        }
+        val review = reviewsRepository.findById(reviewId)
+        if(review.isEmpty) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+                ErrorMessageResponse("Could not find the review with id: $reviewId"),
+            )
+        }
+        reviewsRepository.delete(review.get())
+        return ResponseEntity.ok(
+            SuccessMessageResponse("Review is delete successfully"),
+        )
     }
 
     @GetMapping("$REVIEW_ROUTE_GROUP/count")
-    fun getReviewsCount(): Int {
-        return reviewsRepository.count().toInt()
+    fun getReviewsCount(): GetReviewsCountResponse {
+        return GetReviewsCountResponse(reviewsRepository.count().toInt())
     }
 
 }

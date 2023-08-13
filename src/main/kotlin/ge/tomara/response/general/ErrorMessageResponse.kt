@@ -2,7 +2,7 @@ package ge.tomara.response.general
 
 import com.fasterxml.jackson.annotation.JsonValue
 
-class ErrorMessageResponse(errorCode: Int, private val errorMsg: String) {
+open class ErrorMessageResponse(errorCode: Int, private val errorMsg: String): IMessageResponse {
     private var errorCode: Int? = errorCode
 
     constructor(errorMsg: String): this(0, errorMsg) {
@@ -10,7 +10,7 @@ class ErrorMessageResponse(errorCode: Int, private val errorMsg: String) {
     }
 
     @JsonValue
-    fun value(): Map<String, Any> {
+    override fun value(): Map<String, Any> {
         return HashMap<String, Any>().apply {
             put("error_msg", errorMsg)
             if(errorCode != null) {

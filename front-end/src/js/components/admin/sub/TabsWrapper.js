@@ -3,7 +3,7 @@ import React from "react";
 import {Tab, TabList, TabPanel, Tabs} from "react-tabs";
 import OffersMonitorView from "./OffersMonitorView";
 import WordsEdit from "../../words/WordsEdit";
-import ReviewView from "./ReviewView";
+import ReviewAdminView from "./ReviewAdminView";
 
 const TabsContentCenter = function (props) {
     const children = React.Children.toArray(props.children);
@@ -41,7 +41,7 @@ const TabsWrapper = function () {
             </TabPanel>
             <TabPanel>
                 <TabsContentCenter>
-                    <ReviewView />
+                    <ReviewAdminView />
                 </TabsContentCenter>
             </TabPanel>
         </Tabs>

@@ -1,6 +1,7 @@
 import React from "react";
 import "../../../../css/admin/offers-monitor.css";
 import {encodeUrlParams} from "../../../utils/url-functions";
+import CenteredTextView from "../../utils/CenteredTextView";
 
 class OfferFrequencyResponseEntry {
     constructor(offerId, word, frequency) {
@@ -22,14 +23,6 @@ const OffersMonitorViewCountInfo = function (props) {
     return (
         <div style={{marginTop: 5}} className="offers-monitor-view-count-info">
             ჯამი: {props.total}, უნიკალური: {props.distinct}
-        </div>
-    );
-};
-
-const OffersMonitorViewOfferEmptyTableFiller = function () {
-    return (
-        <div className="offers-monitor-view-entry-table-empty-filler">
-            შედეგი არ არის
         </div>
     );
 };
@@ -115,7 +108,7 @@ class AbstractOffersMonitorViewOffer extends React.Component {
                     </div>
                     <div className="offers-monitor-view-entry-table-rows">
                         {(this.list.length === 0)? (
-                            <OffersMonitorViewOfferEmptyTableFiller />
+                            <CenteredTextView text="შედეგი არ არის" />
                         ): this.list.map((entry, i) => {
                             return (
                                 <div className="offers-monitor-view-entry-table-row">
