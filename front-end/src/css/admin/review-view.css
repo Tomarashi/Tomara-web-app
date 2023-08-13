@@ -1,4 +1,5 @@
 @import "../../font/font.css";
+@import "../../css/commons/variables.css";
 
 .review-admin-view-container {
     width: 600px;
@@ -26,10 +27,10 @@
 
 .review-admin-view-page-change-btn {
     outline: none;
-    background-color: rgba(154, 0, 0, 0.8);
+    background-color: var(--global-default-tomara-color);
     color: white;
     font-family: alk-sanet, sans-serif;
-    border-color: rgba(154, 0, 0, 0.8);
+    border-color: var(--global-default-tomara-color);
     border-width: 1px;
     border-radius: 3px;
     font-size: 15px;
@@ -39,14 +40,14 @@
 .review-admin-view-page-change-btn:hover {
     cursor: pointer;
     background-color: white;
-    color: rgba(154, 0, 0, 0.8);
+    color: var(--global-default-tomara-color);
 }
 
 .review-admin-view-page-change-btn:disabled,
 .review-admin-view-page-change-btn[disabled] {
-    border: 1px rgba(154, 0, 0, 0.2);
-    background-color: rgba(154, 0, 0, 0.2);
-    color: rgba(154, 0, 0, 0.8);
+    border: 1px var(--global-disabled-tomara-color);
+    background-color: var(--global-disabled-tomara-color);
+    color: var(--global-default-tomara-color);
 }
 
 .review-admin-view-page-number {
@@ -74,7 +75,7 @@
 .review-admin-view-container-reviews-id,
 .review-admin-view-container-reviews-date {
     font-size: 23px;
-    color: rgba(154, 0, 0, 0.8);
+    color: var(--global-default-tomara-color);
     cursor: pointer;
 }
 
@@ -87,9 +88,9 @@
 
 .review-admin-view-container-reviews-meta-delete {
     outline: none;
-    border: 1px solid rgba(154, 0, 0, 0.8);
+    border: 1px solid var(--global-default-tomara-color);
     color: white;
-    background-color: rgba(154, 0, 0, 0.8);
+    background-color: var(--global-default-tomara-color);
     font-family: bpg-arial, sans-serif;
     font-size: 17px;
     padding: 4px 8px;
@@ -98,7 +99,7 @@
 }
 
 .review-admin-view-container-reviews-meta-delete:hover {
-    color: rgba(154, 0, 0, 0.8);
+    color: var(--global-default-tomara-color);
     background-color: white;
     cursor: pointer;
 }
@@ -122,8 +123,8 @@
     background: #f1f1f1;
 }
 .review-admin-view-container-reviews-content::-webkit-scrollbar-thumb {
-    background: rgba(154, 0, 0, 0.7);
+    background: var(--global-default-tomara-color);
 }
 .review-admin-view-container-reviews-content::-webkit-scrollbar-thumb:hover {
-    background: rgba(154, 0, 0, 1);
+    background: var(--global-darker-tomara-color);
 }

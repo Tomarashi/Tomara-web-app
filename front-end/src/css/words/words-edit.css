@@ -19,10 +19,10 @@
     background: #f1f1f1;
 }
 .words-edit-response-list::-webkit-scrollbar-thumb {
-    background: rgba(154, 0, 0, 0.7);
+    background: var(--global-default-tomara-color);
 }
 .words-edit-response-list::-webkit-scrollbar-thumb:hover {
-    background: rgba(154, 0, 0, 1);
+    background: var(--global-darker-tomara-color);
 }
 
 .words-edit-input-container {
@@ -131,7 +131,7 @@
     cursor: pointer;
 }
 .words-edit-response-list-item-config-valid button:hover {
-    background-color: rgba(154, 0, 0, 1);
+    background-color: var(--global-darker-tomara-color);
 }
 
 .words-edit-response-list-item-config-valid span {
@@ -178,7 +178,7 @@
     height: 50px;
     border-radius: 8px;
     color: white;
-    background-color: rgba(154, 0, 0, 0.9);
+    background-color: var(--global-darker-tomara-color);
     font-size: 20px;
     font-family: bpg-arial, sans-serif;
     cursor: pointer;

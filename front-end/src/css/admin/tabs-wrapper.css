@@ -1,4 +1,5 @@
 @import "../../font/font.css";
+@import "../../css/commons/variables.css";
 
 .tabs-wrapper-background-tab-content-center {
     width: 100%;
@@ -27,7 +28,7 @@
     cursor: pointer;
     padding: 10px 14px;
     font-family: alk-sanet, sans-serif;
-    background-color: rgba(154, 0, 0, 0.7);
+    background-color: var(--global-default-tomara-color);
     color: white;
     outline: none;
     max-height: fit-content;
@@ -35,5 +36,5 @@
 
 .tabs-wrapper-background-tab-list-li-active,
 .tabs-wrapper-background-tab-list li:hover {
-    background-color: rgba(154, 0, 0, 1) !important;
+    background-color: var(--global-darker-tomara-color) !important;
 }

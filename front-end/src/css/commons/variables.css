@@ -1,0 +1,5 @@
+:root {
+    --global-disabled-tomara-color: rgba(154, 0, 0, 0.2);
+    --global-default-tomara-color: rgba(154, 0, 0, 0.7);
+    --global-darker-tomara-color: rgba(154, 0, 0, 1);
+}

@@ -1,5 +1,5 @@
 @import "../../font/font.css";
-
+@import "../../css/commons/variables.css";
 
 .review-create-view-container {
     width: 360px;
@@ -46,7 +46,7 @@
 .review-create-view-send-review-button {
     margin-top: 11px;
     font-family: alk-sanet, sans-serif;
-    background-color: rgba(154, 0, 0, 0.7);
+    background-color: var(--global-default-tomara-color);
     color: white;
     border: none;
     outline: none;
@@ -56,11 +56,11 @@
 }
 
 .review-create-view-send-review-button:hover {
-    background-color: rgba(154, 0, 0, 0.9);
+    background-color: var(--global-darker-tomara-color);
     cursor: pointer;
 }
 
 .review-create-view-send-review-button:disabled,
 .review-create-view-send-review-button[disabled] {
-    background-color: rgba(154, 0, 0, 0.2);
+    background-color: var(--global-disabled-tomara-color);
 }
