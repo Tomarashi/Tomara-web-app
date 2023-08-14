@@ -2,26 +2,28 @@ import "../../../css/words/words-edit.css";
 import {useRef, useState} from "react";
 import {encodeUrlParams} from "../../utils/url-functions";
 import {randomAsciiLetters} from "../../utils/random-functions";
-import {API_WORD_FIND, API_WORD_OFFER_ADD} from "../../Const";
 import FacebookLoader from "../loader/FacebookLoader";
 import {
     ARROW_KEY_NAMES, BACKSPACE_KEY_NAME, DELETE_KEY_NAME, DELETE_KEY_NAMES,
     ENG_TO_GEO_CHARS_MAP,
-    ENG_UPPER_CHARS_SET,
     GEO_CHARS_SET
 } from "../../utils/characters";
-import {stringsEqualsIgnoreCase} from "../../utils/string-functions";
 import {WordMetadataWrapper} from "./WordMetadataWrapper";
 import StringsSet from "../../utils/StringSet";
 
 
 const INPUT_PLACEHOLDER_VALUE = "მოძებნე...";
 const ADD_WORD_TO_DICT_MESSAGE = "დაამატე სიტყვა";
-const FIND_N_LIMIT = 500;
 
-const ARROW_UPPER_CHARS_SET = new StringsSet(ARROW_KEY_NAMES);
-const DEL_UPPER_CHARS_SET = new StringsSet(DELETE_KEY_NAMES);
-const OTHER_UPPER_CHARS_SET = new StringsSet(["-"]);
+const ARROW_CHARS_STRS_SET = new StringsSet(ARROW_KEY_NAMES);
+const DEL_CHARS_STRS_SET = new StringsSet(DELETE_KEY_NAMES);
+const OTHER_CHARS_STRS_SET = new StringsSet(["-"]);
+
+
+String.prototype.equalsIgnoreCase = function(other) {
+    if(!other) return false;
+    return this.toUpperCase() === other.toUpperCase();
+};
 
 
 const WordsEdit = function () {
@@ -31,7 +33,7 @@ const WordsEdit = function () {
     const editInputRef = useRef(null);
     const editInputLoaderRef = useRef(null);
     const [isLoading, setIsLoading] = useState(false);
-    const [wordsList, updateWordsList] = useState(null);
+    const [[wordsList, isExactMatch], updateWordsList] = useState([null, false]);
 
     let timeout = null;
     let lastRequestId = null;
@@ -40,9 +42,8 @@ const WordsEdit = function () {
 
     const makeRequest = (editInputValue) => {
         const requestId = randomAsciiLetters(16);
-        const url = API_WORD_FIND + encodeUrlParams({
+        const url = "/api/word/find" + encodeUrlParams({
             "sub_geo_word": editInputValue,
-            "n_limit": FIND_N_LIMIT,
             "request_id": requestId,
         });
         lastRequestId = requestId;
@@ -52,15 +53,21 @@ const WordsEdit = function () {
             .then(res => res.json())
             .then((data) => {
                 if(lastRequestId === data["request_id"]) {
-                    const wrappers = (data["words"] || []).map(value => {
+                    const words = data["words"] || [];
+                    const valueIndex = words.indexOf(editInputValue);
+                    if(valueIndex >= 0) {
+                        words.splice(valueIndex, 1);
+                        words.splice(0, 0, editInputValue);
+                    }
+                    const wrappers = words.map(value => {
                         return new WordMetadataWrapper(value);
                     });
                     setIsLoading(false);
-                    updateWordsList(wrappers);
+                    updateWordsList([wrappers, valueIndex >= 0]);
                 }
             })
             .catch((err) => {
-                updateWordsList(null);
+                updateWordsList([null, false]);
                 console.error(err);
             })
             .finally(() => {
@@ -69,28 +76,29 @@ const WordsEdit = function () {
     };
 
     const updateInputValue = (targetInput, newChar) => {
-        const ind = targetInput.selectionStart;
+        const start = targetInput.selectionStart;
+        const end = targetInput.selectionEnd;
         const value = targetInput.value;
-        if(stringsEqualsIgnoreCase(newChar, BACKSPACE_KEY_NAME)) {
-            if(ind > 0) {
-                targetInput.value = value.substring(0, ind - 1) + value.substring(ind);
-                targetInput.setSelectionRange(ind - 1, ind - 1);
-            }
-        } else if(stringsEqualsIgnoreCase(newChar, DELETE_KEY_NAME)) {
-            if(ind < value.length) {
-                targetInput.value = value.substring(0, ind) + value.substring(ind + 1);
-                targetInput.setSelectionRange(ind, ind);
-            }
-        } else {
-            targetInput.value = value.substring(0, ind) + newChar + value.substring(ind);
-            targetInput.setSelectionRange(ind + 1, ind + 1);
+
+        if(!DEL_CHARS_STRS_SET.has(newChar)) {
+            targetInput.value = value.substring(0, start) + newChar + value.substring(start);
+            targetInput.setSelectionRange(start + 1, start + 1);
+        } else if(start !== end) {
+            targetInput.value = value.substring(0, start) + value.substring(end);
+            targetInput.setSelectionRange(start, start);
+        } else if(newChar.equalsIgnoreCase(BACKSPACE_KEY_NAME) && start > 0) {
+            targetInput.value = value.substring(0, start - 1) + value.substring(start);
+            targetInput.setSelectionRange(start - 1, start - 1);
+        } else if(newChar.equalsIgnoreCase(DELETE_KEY_NAME) && start < value.length) {
+            targetInput.value = value.substring(0, start) + value.substring(start + 1);
+            targetInput.setSelectionRange(start, start);
         }
     };
 
     const updateInputLoaderAndMakeRequest = () => {
         const element = editInputLoaderRef.current;
         element.classList.remove(INPUT_LOADER_ANIM_CLASS_NAME);
-        void element.offsetWidth;
+        void element.offsetWidth;   // Simulate invoke
         element.style.animationDuration = INPUT_LOADER_ANIM_DURATION + "ms";
         element.classList.add(INPUT_LOADER_ANIM_CLASS_NAME);
         clearTimeout(timeout);
@@ -105,32 +113,32 @@ const WordsEdit = function () {
     const handleKeyDownFunction = (e) => {
         const key = e.key;
         const keyUpper = e.key.toUpperCase();
-        if(ARROW_UPPER_CHARS_SET.has(keyUpper)
-        || (keyUpper === "R" && e.ctrlKey)) {
+        if(ARROW_CHARS_STRS_SET.has(keyUpper)
+        || (e.ctrlKey && ["A", "R", "C", "V"].includes(keyUpper))) {
             return;
         }
-        if(DEL_UPPER_CHARS_SET.has(keyUpper)) {
+
+        if(DEL_CHARS_STRS_SET.has(keyUpper)) {
             updateInputValue(e.target, key);
             if(getInputValue() !== "") {
                 updateInputLoaderAndMakeRequest();
             } else {
-                updateWordsList(null);
+                updateWordsList([null, false]);
             }
-        } else if(GEO_CHARS_SET.has(key) || OTHER_UPPER_CHARS_SET.has(key)) {
-            updateInputValue(e.target, key);
+        } else if(
+            GEO_CHARS_SET.has(key)
+            || OTHER_CHARS_STRS_SET.has(key)
+            || ENG_TO_GEO_CHARS_MAP.hasOwnProperty(key)
+        ) {
+            const engToGeo = ENG_TO_GEO_CHARS_MAP[key];
+            updateInputValue(e.target, (engToGeo)? engToGeo: key);
             updateInputLoaderAndMakeRequest();
-        } else if(ENG_UPPER_CHARS_SET.has(keyUpper)) {
-            const engChar = ENG_TO_GEO_CHARS_MAP[key];
-            if(engChar !== undefined) {
-                updateInputValue(e.target, engChar);
-                updateInputLoaderAndMakeRequest();
-            }
         }
         e.preventDefault();
     };
 
     const addWordButtonClicked = () => {
-        const url = API_WORD_OFFER_ADD + encodeUrlParams({
+        const url = "/api/word/offer/add" + encodeUrlParams({
             "new_word": getInputValue(),
         });
         fetch(url, {
@@ -165,7 +173,7 @@ const WordsEdit = function () {
                 if(wordsList === null) {
                     return null;
                 }
-                if(wordsList.length === 0) {
+                if(wordsList.length === 0 && !isExactMatch) {
                     return (
                         <div
                             onClick={addWordButtonClicked}
@@ -176,8 +184,11 @@ const WordsEdit = function () {
                         </div>
                     );
                 }
-                return <div className="words-edit-response-list">{wordsList}</div>;
+                return null;
             })()}
+            {(isLoading || wordsList === null || wordsList.length === 0)? null: (
+                <div className="words-edit-response-list">{wordsList}</div>
+            )}
         </div>
     );
 };

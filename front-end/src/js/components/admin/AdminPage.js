@@ -2,10 +2,10 @@ import "../../../css/admin/admin.css";
 import WebMetricsBox from "./sub/WebMetricsBox";
 import LogoutButton from "./sub/LogoutButton";
 import TabsWrapper from "./sub/TabsWrapper";
-import {APP_TITLE_FULL} from "../../Const";
+import {APP_TITLE_FULL_ADMIN} from "../../Const";
 
 const AdminPage = function() {
-    document.title = "[Admin] " + APP_TITLE_FULL;
+    document.title = APP_TITLE_FULL_ADMIN;
 
     return (
         <div className="admin-content-background">

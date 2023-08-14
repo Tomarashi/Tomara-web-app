@@ -1,6 +1,5 @@
 import {randomAsciiLetters} from "../../utils/random-functions";
 import {encodeUrlParams} from "../../utils/url-functions";
-import {API_WORD_OFFER_DELETE} from "../../Const";
 
 
 const WORD_TYPE_VALID = 1;
@@ -33,7 +32,7 @@ export const WordMetadataWrapper = function(wordResponse) {
     let configIsVisible = false;
 
     const deleteOffer = () => {
-        const url = API_WORD_OFFER_DELETE + encodeUrlParams({
+        const url = "/api/word/offer/delete" + encodeUrlParams({
             "word_id": wordId,
         });
         fetch(url, {
