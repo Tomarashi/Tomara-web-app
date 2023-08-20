@@ -1,4 +1,5 @@
 @import "../../font/font.css";
+@import "../commons/variables.css";
 
 .web-metrics-box-container {
     width: 100%;
@@ -52,5 +53,6 @@
     font-size: 17px;
 }
 .web-metrics-box-active-sessions-field i {
-    font-size: 15px;
+    font-size: 16px;
+    color: var(--global-default-tomara-color);
 }
