@@ -1,6 +1,7 @@
 import "../../../css/main/review-create-view.css";
-import {useRef, useState} from "react";
+import {useContext, useRef, useState} from "react";
 import {FacebookLoaderWrapped} from "../loader/FacebookLoader";
+import * as ThemeContext from "../ThemeContext";
 
 const REVIEW_CONTENT_MAX_LENGTH = 250;
 const REVIEW_SEND_BUTTON = "გაგზავნა";
@@ -9,10 +10,17 @@ const ENG_MESSAGES_TO_GEO = {
     "Review added successfully": "მიმოხილვა დამატებულია წარმატებით",
 };
 
-const ReviewCreateView = function () {
+const ReviewCreateView = function (props) {
     const textAreaRef = useRef(null);
     const [contentLen, setContentLen] = useState(0);
     const [isInSending, setInSending] = useState(false);
+    const { theme } = useContext(ThemeContext.ThemeContext);
+    const themed = (clsName) => {
+        if(!props["use-theme"] || theme === ThemeContext.THEME_NAME_LIGHT) {
+            return clsName + "-light";
+        }
+        return clsName + "-dark";
+    };
 
     const getContent = () => (textAreaRef.current.value || "").trimEnd();
     const sendReview = () => {
@@ -50,7 +58,7 @@ const ReviewCreateView = function () {
 
     if(isInSending) {
         return (
-            <div className="review-create-view-container">
+            <div className={themed("review-create-view-container")}>
                 <FacebookLoaderWrapped />
             </div>
         );
@@ -60,16 +68,17 @@ const ReviewCreateView = function () {
         "color": (contentLen <= REVIEW_CONTENT_MAX_LENGTH)? "green": "red",
     };
     return (
-        <div className="review-create-view-container">
+        <div className={themed("review-create-view-container")}>
             <div className="review-create-view-sub-container">
-                <div className="review-create-view-counter">
+                <div className={themed("review-create-view-counter")}>
                     <span style={contentLenStyles}>
                         {contentLen}
-                    </span>/<span>
+                    </span>{" ".repeat(4 - contentLen.toString().length)}/<span>
                         {REVIEW_CONTENT_MAX_LENGTH}
                     </span>
                 </div>
                 <textarea
+                    className={themed("review-create-view-textarea")}
                     ref={textAreaRef}
                     onChange={() => {
                         setContentLen(getContent().length);

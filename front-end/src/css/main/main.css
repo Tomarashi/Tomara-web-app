@@ -1,3 +1,5 @@
+@import "../../font/font.css";
+
 body {
     margin: 0;
     background-repeat: no-repeat;
@@ -6,8 +8,28 @@ body {
     background-image: url("../../media/background/background.png");
 }
 
+body::-webkit-scrollbar {
+    width: 12px;
+    border-radius: 4px;
+}
+body::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+body::-webkit-scrollbar-thumb {
+    background: var(--global-default-tomara-color);
+}
+body::-webkit-scrollbar-thumb:hover {
+    background: var(--global-darker-tomara-color);
+}
+
 .main-background {
-    position: fixed;
     width: 100%;
     height: 100%;
+}
+
+.main-content {
+    width: 500px;
+    background-color: white;
+    margin-left: auto;
+    margin-right: auto;
 }

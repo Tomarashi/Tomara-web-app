@@ -1,0 +1,6 @@
+@import "../../font/font.css";
+
+.info-header-container {
+    height: 50px;
+    background-color: white;
+}
