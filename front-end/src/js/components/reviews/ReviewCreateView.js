@@ -1,7 +1,7 @@
 import "../../../css/main/review-create-view.css";
-import {useContext, useRef, useState} from "react";
+import {useRef, useState} from "react";
 import {FacebookLoaderWrapped} from "../loader/FacebookLoader";
-import * as ThemeContext from "../ThemeContext";
+import {useTheme} from "../ThemeUtils";
 
 const REVIEW_CONTENT_MAX_LENGTH = 250;
 const REVIEW_SEND_BUTTON = "გაგზავნა";
@@ -10,17 +10,11 @@ const ENG_MESSAGES_TO_GEO = {
     "Review added successfully": "მიმოხილვა დამატებულია წარმატებით",
 };
 
-const ReviewCreateView = function (props) {
+const ReviewCreateView = function() {
     const textAreaRef = useRef(null);
     const [contentLen, setContentLen] = useState(0);
     const [isInSending, setInSending] = useState(false);
-    const { theme } = useContext(ThemeContext.ThemeContext);
-    const themed = (clsName) => {
-        if(!props["use-theme"] || theme === ThemeContext.THEME_NAME_LIGHT) {
-            return clsName + "-light";
-        }
-        return clsName + "-dark";
-    };
+    const [withTheme] = useTheme();
 
     const getContent = () => (textAreaRef.current.value || "").trimEnd();
     const sendReview = () => {
@@ -58,7 +52,7 @@ const ReviewCreateView = function (props) {
 
     if(isInSending) {
         return (
-            <div className={themed("review-create-view-container")}>
+            <div className={withTheme("review-create-view-container")}>
                 <FacebookLoaderWrapped />
             </div>
         );
@@ -68,9 +62,9 @@ const ReviewCreateView = function (props) {
         "color": (contentLen <= REVIEW_CONTENT_MAX_LENGTH)? "green": "red",
     };
     return (
-        <div className={themed("review-create-view-container")}>
+        <div className={withTheme("review-create-view-container")}>
             <div className="review-create-view-sub-container">
-                <div className={themed("review-create-view-counter")}>
+                <div className={withTheme("review-create-view-counter")}>
                     <span style={contentLenStyles}>
                         {contentLen}
                     </span>{" ".repeat(4 - contentLen.toString().length)}/<span>
@@ -78,7 +72,7 @@ const ReviewCreateView = function (props) {
                     </span>
                 </div>
                 <textarea
-                    className={themed("review-create-view-textarea")}
+                    className={withTheme("review-create-view-textarea")}
                     ref={textAreaRef}
                     onChange={() => {
                         setContentLen(getContent().length);

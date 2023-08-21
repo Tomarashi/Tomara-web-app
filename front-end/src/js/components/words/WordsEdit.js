@@ -1,5 +1,5 @@
 import "../../../css/words/words-edit.css";
-import {useContext, useRef, useState} from "react";
+import {useRef, useState} from "react";
 import {encodeUrlParams} from "../../utils/url-functions";
 import FacebookLoader from "../loader/FacebookLoader";
 import {
@@ -9,7 +9,7 @@ import {
 } from "../../utils/characters";
 import {WordMetadataWrapper} from "./WordMetadataWrapper";
 import StringsSet from "../../utils/StringSet";
-import * as ThemeContext from "../ThemeContext";
+import {useTheme} from "../ThemeUtils";
 
 
 const INPUT_PLACEHOLDER_VALUE = "მოძებნე...";
@@ -26,7 +26,7 @@ String.prototype.equalsIgnoreCase = function(other) {
 };
 
 
-const WordsEdit = function (props) {
+const WordsEdit = function() {
     const INPUT_LOADER_ANIM_CLASS_NAME = "words-edit-input-loader-mover-animation";
     const INPUT_LOADER_ANIM_DURATION = 1000;
 
@@ -38,13 +38,7 @@ const WordsEdit = function (props) {
         maxPossibleLimit,
         isExactMatch,
     ], updateWordsList] = useState([null, 0, false]);
-    const { theme } = useContext(ThemeContext.ThemeContext);
-    const themed = (clsName) => {
-        if(!props["use-theme"] || theme === ThemeContext.THEME_NAME_LIGHT) {
-            return clsName + "-light";
-        }
-        return clsName + "-dark";
-    };
+    const [withTheme] = useTheme();
 
     let timeout = null;
     let lastRequestId = null;
@@ -165,12 +159,12 @@ const WordsEdit = function (props) {
     };
 
     return (
-        <div className={themed("words-edit-container")}>
+        <div className={withTheme("words-edit-container")}>
             <div className="words-edit-input-container">
                 <input
                     ref={editInputRef}
                     onKeyDown={handleKeyDownFunction}
-                    className={themed("words-edit-input")}
+                    className={withTheme("words-edit-input")}
                     placeholder={INPUT_PLACEHOLDER_VALUE}
                     type="text" />
                 <div className="words-edit-input-loader">

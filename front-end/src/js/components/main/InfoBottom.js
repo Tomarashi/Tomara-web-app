@@ -1,16 +1,10 @@
 import "../../../css/main/info-bottom.css";
-import {useContext} from "react";
 import * as ThemeContext from "../ThemeContext";
 import {APP_TITLE_ALT, UNI_NAME} from "../../Const";
+import {useTheme} from "../ThemeUtils";
 
 const InfoBottom = function() {
-    const { theme } = useContext(ThemeContext.ThemeContext);
-    const themed = (clsName) => {
-        if(theme === ThemeContext.THEME_NAME_LIGHT) {
-            return clsName + "-light";
-        }
-        return clsName + "-dark";
-    };
+    const [withTheme, theme] = useTheme();
 
     const iconStyles = {
         color: (theme === ThemeContext.THEME_NAME_LIGHT)? "black": "white",
@@ -22,8 +16,8 @@ const InfoBottom = function() {
         return url.toString();
     })();
     return (
-        <div className={themed("info-bottom-container")}>
-            <div className={themed("info-bottom-center-container")}>
+        <div className={withTheme("info-bottom-container")}>
+            <div className={withTheme("info-bottom-center-container")}>
                 <div className="info-bottom-title">
                     {APP_TITLE_ALT}
                 </div>

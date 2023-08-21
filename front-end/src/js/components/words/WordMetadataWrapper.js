@@ -1,7 +1,6 @@
 import {randomAsciiLetters} from "../../utils/random-functions";
 import {encodeUrlParams} from "../../utils/url-functions";
-import * as ThemeContext from "../ThemeContext";
-import {useContext} from "react";
+import {useTheme} from "../ThemeUtils";
 
 
 const WORD_TYPE_VALID = 1;
@@ -24,13 +23,7 @@ export const WordMetadataWrapper = function(props) {
     const wordGeo = wordResponse["word_geo"];
     const wordType = wordResponse["type"] || 0;
     const wordTypeStr = wordType.toString();
-    const { theme } = useContext(ThemeContext.ThemeContext);
-    const themed = (clsName) => {
-        if(theme === ThemeContext.THEME_NAME_LIGHT) {
-            return clsName + "-light";
-        }
-        return clsName + "-dark";
-    };
+    const [withTheme] = useTheme();
 
     if(!VALID_WORD_TYPES.includes(wordType)) {
         return null;
@@ -100,7 +93,7 @@ export const WordMetadataWrapper = function(props) {
                     return (
                         <div
                             id={idConfig}
-                            className={themed("words-edit-response-list-item-config")}
+                            className={withTheme("words-edit-response-list-item-config")}
                             style={{ display: "none" }}>
                             {configContent}
                         </div>

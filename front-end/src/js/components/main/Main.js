@@ -3,27 +3,20 @@ import {APP_TITLE_FULL} from "../../Const";
 import ReviewCreateView from "../reviews/ReviewCreateView";
 import WordsEdit from "../words/WordsEdit";
 import InfoHeader from "./InfoHeader";
-import * as ThemeContext from "../ThemeContext";
 import {ThemeProvider} from "../ThemeContext";
-import {useContext} from "react";
 import InfoBottom from "./InfoBottom";
+import {useTheme} from "../ThemeUtils";
 
 const MainContent = function () {
-    const { theme } = useContext(ThemeContext.ThemeContext);
-    const themed = (clsName) => {
-        if(theme === ThemeContext.THEME_NAME_LIGHT) {
-            return clsName + "-light";
-        }
-        return clsName + "-dark";
-    };
+    const [withTheme] = useTheme();
 
     return (
         <div className="main-background">
             <InfoHeader />
             <div style={{height: 20}} />
-            <div className={themed("main-content")}>
-                <WordsEdit use-theme={true} />
-                <ReviewCreateView use-theme={true} />
+            <div className={withTheme("main-content")}>
+                <WordsEdit />
+                <ReviewCreateView />
             </div>
             <div style={{height: 40}} />
             <InfoBottom />
