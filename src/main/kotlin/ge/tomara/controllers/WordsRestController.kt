@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
+import java.lang.StringBuilder
 import java.util.concurrent.locks.ReentrantLock
 
 @RestController
@@ -49,9 +50,11 @@ class WordsRestController {
 
         @JvmStatic
         private fun convertGeoToEngWord(word: String): String {
-            return word.toList().map { c ->
-                GEO_TO_ENG_CHAR_MAP[c]
-            }.joinToString("")
+            return StringBuilder(word.length).apply {
+                for(c in word) {
+                    append(GEO_TO_ENG_CHAR_MAP[c])
+                }
+            }.toString()
         }
     }
 
@@ -79,20 +82,22 @@ class WordsRestController {
 
         if(subString.isBlank()) {
             return ResponseEntity.badRequest().body(
-                WordsFindResponse(emptyList<WordResponse>(), requestId = requestId),
+                WordsFindResponse(emptyList<WordResponse>(), 0, requestId = requestId),
             )
         }
 
-        val validWords = wordsRepository.findByGeoWordContains(subString, nLimit).map {wordsEntity ->
+        val subEngWord = convertGeoToEngWord(subString)
+        val validWords = wordsRepository.findByEngWordContains(subEngWord, nLimit).map {wordsEntity ->
             WordResponse.from(wordsEntity, WordResponseType.VALID)
         }
-        val deletedWords = wordsDeletedRepository.findByDelGeoWordContains(subString, nLimit).map {wordsEntity ->
+        val deletedWords = wordsDeletedRepository.findByDelEngWordContains(subEngWord, nLimit).map {wordsEntity ->
             WordResponse.from(wordsEntity, WordResponseType.DELETED)
         }
+        val totalFoundN = validWords.size + deletedWords.size
 
         val result = mergeSortedLists(validWords, deletedWords, nLimit, WORD_RESPONSE_COMPARATOR)
         return ResponseEntity.ok(
-            WordsFindResponse(result, requestId = requestId),
+            WordsFindResponse(result, totalFoundN, requestId = requestId),
         )
     }
 
