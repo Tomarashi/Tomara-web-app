@@ -1,0 +1,52 @@
+@import "../../font/font.css";
+
+.info-bottom-container-light,
+.info-bottom-container-dark {
+    width: 100%;
+    height: 180px;
+}
+.info-bottom-container-light {
+    background-color: rgba(255, 255, 255, 1);
+}
+.info-bottom-container-dark {
+    background-color: rgba(0, 0, 0, 1);
+}
+
+.info-bottom-center-container-light,
+.info-bottom-center-container-dark {
+    display: flex;
+    width: fit-content;
+    justify-content: center;
+    flex-direction: column;
+    margin-left: auto;
+    margin-right: auto;
+}
+.info-bottom-center-container-light {
+    color: #121212;
+}
+.info-bottom-center-container-dark {
+    color: white;
+}
+
+.info-bottom-title {
+    margin-top: 30px;
+    font-family: alk-sanet, sans-serif;
+    font-size: 22px;
+    text-align: center;
+}
+
+.info-bottom-icons {
+    margin: 10px auto;
+    width: 40%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.info-bottom-texts p {
+    font-size: 16px;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    text-align: center;
+    font-family: bpg-arial, sans-serif;
+}

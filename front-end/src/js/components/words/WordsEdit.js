@@ -1,7 +1,6 @@
 import "../../../css/words/words-edit.css";
-import {useRef, useState} from "react";
+import {useContext, useRef, useState} from "react";
 import {encodeUrlParams} from "../../utils/url-functions";
-import {randomAsciiLetters} from "../../utils/random-functions";
 import FacebookLoader from "../loader/FacebookLoader";
 import {
     ARROW_KEY_NAMES, BACKSPACE_KEY_NAME, DELETE_KEY_NAME, DELETE_KEY_NAMES,
@@ -10,6 +9,7 @@ import {
 } from "../../utils/characters";
 import {WordMetadataWrapper} from "./WordMetadataWrapper";
 import StringsSet from "../../utils/StringSet";
+import * as ThemeContext from "../ThemeContext";
 
 
 const INPUT_PLACEHOLDER_VALUE = "მოძებნე...";
@@ -26,14 +26,25 @@ String.prototype.equalsIgnoreCase = function(other) {
 };
 
 
-const WordsEdit = function () {
+const WordsEdit = function (props) {
     const INPUT_LOADER_ANIM_CLASS_NAME = "words-edit-input-loader-mover-animation";
     const INPUT_LOADER_ANIM_DURATION = 1000;
 
     const editInputRef = useRef(null);
     const editInputLoaderRef = useRef(null);
     const [isLoading, setIsLoading] = useState(false);
-    const [[wordsList, isExactMatch], updateWordsList] = useState([null, false]);
+    const [[
+        wordsList,
+        maxPossibleLimit,
+        isExactMatch,
+    ], updateWordsList] = useState([null, 0, false]);
+    const { theme } = useContext(ThemeContext.ThemeContext);
+    const themed = (clsName) => {
+        if(!props["use-theme"] || theme === ThemeContext.THEME_NAME_LIGHT) {
+            return clsName + "-light";
+        }
+        return clsName + "-dark";
+    };
 
     let timeout = null;
     let lastRequestId = null;
@@ -41,12 +52,13 @@ const WordsEdit = function () {
     const getInputValue = () => editInputRef.current.value;
 
     const makeRequest = (editInputValue) => {
-        const requestId = randomAsciiLetters(16);
+        const nLimit = 5000;
         const url = "/api/word/find" + encodeUrlParams({
             "sub_geo_word": editInputValue,
-            "request_id": requestId,
+            "request_id": editInputValue,
+            "n_limit": nLimit,
         });
-        lastRequestId = requestId;
+        lastRequestId = editInputValue;
 
         setIsLoading(true);
         fetch(url)
@@ -60,14 +72,15 @@ const WordsEdit = function () {
                         words.splice(0, 0, editInputValue);
                     }
                     const wrappers = words.map(value => {
-                        return new WordMetadataWrapper(value);
+                        return <WordMetadataWrapper value={value} />
                     });
+                    const nUncut = data["words_n_uncut"] || 0;
+                    updateWordsList([wrappers, nUncut, valueIndex >= 0]);
                     setIsLoading(false);
-                    updateWordsList([wrappers, valueIndex >= 0]);
                 }
             })
             .catch((err) => {
-                updateWordsList([null, false]);
+                updateWordsList([null, 0, false]);
                 console.error(err);
             })
             .finally(() => {
@@ -123,7 +136,7 @@ const WordsEdit = function () {
             if(getInputValue() !== "") {
                 updateInputLoaderAndMakeRequest();
             } else {
-                updateWordsList([null, false]);
+                updateWordsList([null, 0, false]);
             }
         } else if(
             GEO_CHARS_SET.has(key)
@@ -148,18 +161,16 @@ const WordsEdit = function () {
             .then(_ => {
                 alert("სიტყვის დამატების მოთხოვნა წარმატებით გაიგზავნა");
             })
-            .catch((err) => {
-                console.error(err);
-            });
+            .catch(console.error);
     };
 
     return (
-        <div className="words-edit-container">
+        <div className={themed("words-edit-container")}>
             <div className="words-edit-input-container">
                 <input
                     ref={editInputRef}
                     onKeyDown={handleKeyDownFunction}
-                    className="words-edit-input"
+                    className={themed("words-edit-input")}
                     placeholder={INPUT_PLACEHOLDER_VALUE}
                     type="text" />
                 <div className="words-edit-input-loader">
@@ -188,6 +199,9 @@ const WordsEdit = function () {
             })()}
             {(isLoading || wordsList === null || wordsList.length === 0)? null: (
                 <div className="words-edit-response-list">{wordsList}</div>
+            )}
+            {(isLoading || wordsList === null || maxPossibleLimit === 0)? null: (
+                <div>{`${wordsList.length}/${maxPossibleLimit}`}</div>
             )}
         </div>
     );

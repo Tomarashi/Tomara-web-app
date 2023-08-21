@@ -27,9 +27,15 @@ body::-webkit-scrollbar-thumb:hover {
     height: 100%;
 }
 
-.main-content {
-    width: 500px;
-    background-color: white;
+.main-content-light,
+.main-content-dark {
+    width: 750px;
     margin-left: auto;
     margin-right: auto;
+}
+.main-content-light {
+    background-color: rgba(245, 245, 245, 0.8);
+}
+.main-content-dark {
+    background-color: rgba(56, 56, 56, 0.8);
 }

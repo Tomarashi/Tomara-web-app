@@ -1,6 +1,118 @@
 @import "../../font/font.css";
 
-.info-header-container {
-    height: 50px;
+:root {
+    --header-height: 60px;
+    --header-logo-height: 44px;
+}
+
+.info-header-container-light,
+.info-header-container-dark {
+    height: var(--header-height);
+}
+.info-header-container-light {
+    background-color: rgba(255, 255, 255, 0.9);
+}
+.info-header-container-dark {
+    background-color: rgba(0, 0, 0, 0.8);
+}
+
+.info-header-logo-holder-container-light,
+.info-header-logo-holder-container-dark {
+    margin-top: calc((var(--header-height) - var(--header-logo-height)) / 2);
+    margin-left: 70px;
+    width: 150px;
+    height: var(--header-logo-height);
+    float: left;
+    cursor: default;
+    border-left-width: 3px;
+    border-right-width: 3px;
+    border-left-style: solid;
+    border-right-style: solid;
+}
+.info-header-logo-holder-container-light {
+    border-left-color: #282828;
+    border-right-color: #282828;
+}
+.info-header-logo-holder-container-dark {
+    border-left-color: white;
+    border-right-color: white;
+}
+
+.info-header-logo-holder-logo {
+    margin-left: 9px;
+    width: var(--header-logo-height);
+    height: var(--header-logo-height);
+}
+
+.info-header-logo-holder-title-light,
+.info-header-logo-holder-title-dark {
+    position: relative;
+    margin-right: 9px;
+    float: right;
+    height: inherit;
+    font-family: alk-sanet, sans-serif;
+    display: flex;
+    flex-direction: column;
+}
+.info-header-logo-holder-title-light {
+    color: black;
+}
+.info-header-logo-holder-title-dark {
+    color: white;
+}
+
+.info-header-logo-holder-title-top {
+    font-size: 21px;
+}
+.info-header-logo-holder-title-bottom {
+    font-size: 23px;
+    position: absolute;
+    bottom: 0;
+}
+
+.info-header-switch-button-container-light,
+.info-header-switch-button-container-dark {
+    width: 165px;
+    float: right;
+    border-radius: 20px;
+    border-width: 2px;
+    border-style: solid;
+    margin-top: 8px;
+    margin-right: 10px;
+}
+.info-header-switch-button-container-light {
+    border-color: #363636;
     background-color: white;
+}
+.info-header-switch-button-container-dark {
+    border-color: white;
+    background-color: black;
+}
+
+.info-header-switch-button-text-light,
+.info-header-switch-button-text-dark {
+    font-family: alk-sanet, sans-serif;
+    font-size: 28px;
+    float: right;
+    margin-top: 8px;
+    margin-right: 8px;
+}
+.info-header-switch-button-text-light {
+    color: #363636;
+}
+.info-header-switch-button-text-dark {
+    color: white;
+}
+
+.info-header-switch-button-sun-icon {
+    color: white;
+    margin-top: 6px;
+    margin-left: 5px;
+    font-size: 27px;
+}
+.info-header-switch-button-moon-icon {
+    color: white;
+    margin-top: 8px;
+    margin-left: 11px;
+    font-size: 23px;
 }

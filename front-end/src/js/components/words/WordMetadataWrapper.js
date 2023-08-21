@@ -1,5 +1,7 @@
 import {randomAsciiLetters} from "../../utils/random-functions";
 import {encodeUrlParams} from "../../utils/url-functions";
+import * as ThemeContext from "../ThemeContext";
+import {useContext} from "react";
 
 
 const WORD_TYPE_VALID = 1;
@@ -16,17 +18,25 @@ const CLASSNAMES_CONFIG_TYPE_MAP = {
 };
 
 
-export const WordMetadataWrapper = function(wordResponse) {
+export const WordMetadataWrapper = function(props) {
+    const wordResponse = props["value"];
     const wordId = wordResponse["word_id"];
     const wordGeo = wordResponse["word_geo"];
     const wordType = wordResponse["type"] || 0;
     const wordTypeStr = wordType.toString();
+    const { theme } = useContext(ThemeContext.ThemeContext);
+    const themed = (clsName) => {
+        if(theme === ThemeContext.THEME_NAME_LIGHT) {
+            return clsName + "-light";
+        }
+        return clsName + "-dark";
+    };
 
     if(!VALID_WORD_TYPES.includes(wordType)) {
         return null;
     }
 
-    const id = `word-meta-${randomAsciiLetters(16)}-${wordId}`;
+    const id = `word-meta-${randomAsciiLetters(8)}-${wordId}`;
     const idConfig = id + "-config";
 
     let configIsVisible = false;
@@ -68,7 +78,7 @@ export const WordMetadataWrapper = function(wordResponse) {
                 id={id}
                 className={`words-edit-response-list-item ${CLASSNAMES_TYPE_MAP[wordTypeStr]}`}
                 style={{
-                    cursor: (configContent)? "pointer": "auto"
+                    cursor: (configContent)? "pointer": "default"
                 }}
                 onClick={(configContent === null)? null: (() => {
                     const thisElement = document.getElementById(id);
@@ -90,7 +100,7 @@ export const WordMetadataWrapper = function(wordResponse) {
                     return (
                         <div
                             id={idConfig}
-                            className="words-edit-response-list-item-config"
+                            className={themed("words-edit-response-list-item-config")}
                             style={{ display: "none" }}>
                             {configContent}
                         </div>

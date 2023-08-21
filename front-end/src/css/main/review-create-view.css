@@ -9,9 +9,11 @@
 }
 .review-create-view-container-light {
     background-color: white;
+    border: 1px solid black;
 }
 .review-create-view-container-dark {
     background-color: #121212;
+    border: 1px solid white;
 }
 
 .review-create-view-sub-container {
