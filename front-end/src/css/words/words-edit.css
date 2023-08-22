@@ -19,20 +19,6 @@
     border: 1px solid white;
 }
 
-.words-edit-response-list::-webkit-scrollbar {
-    width: 12px;
-    border-radius: 4px;
-}
-.words-edit-response-list::-webkit-scrollbar-track {
-    background: #f1f1f1;
-}
-.words-edit-response-list::-webkit-scrollbar-thumb {
-    background: var(--global-default-tomara-color);
-}
-.words-edit-response-list::-webkit-scrollbar-thumb:hover {
-    background: var(--global-darker-tomara-color);
-}
-
 .words-edit-response-metas-light,
 .words-edit-response-metas-dark {
     width: 100%;
@@ -113,8 +99,27 @@
     margin-bottom: 5px;
     width: 100%;
     min-width: 300px;
-    height: 76%;
     overflow-y: scroll;
+}
+.words-edit-response-list-tall {
+    height: 395px;
+}
+.words-edit-response-list-low {
+    height: 320px;
+}
+
+.words-edit-response-list::-webkit-scrollbar {
+    width: 12px;
+    border-radius: 4px;
+}
+.words-edit-response-list::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+.words-edit-response-list::-webkit-scrollbar-thumb {
+    background: var(--global-default-tomara-color);
+}
+.words-edit-response-list::-webkit-scrollbar-thumb:hover {
+    background: var(--global-darker-tomara-color);
 }
 
 .words-edit-response-list-item-wrapper {
@@ -216,7 +221,7 @@
 
 .words-edit-empty-response-add-word-button {
     display: table;
-    margin-top: 30px;
+    margin-top: 20px;
     margin-left: auto;
     margin-right: auto;
     width: 220px;

@@ -74,36 +74,40 @@ class WordsRestController {
 
     @GetMapping("/find")
     fun findWords(
-        @RequestParam("sub_geo_word", required=true) subString: String,
+        @RequestParam("sub_geo_word", required=true) subGeoWord: String,
         @RequestParam("n_limit", required=false) nLimitArg: Int? = null,
         @RequestParam("request_id", required=false) requestId: String? = null,
     ): ResponseEntity<Any> {
         val nLimit = if(nLimitArg == null || nLimitArg < 0) Int.MAX_VALUE else nLimitArg
 
-        if(subString.isBlank()) {
+        if(subGeoWord.isBlank()) {
             return ResponseEntity.badRequest().body(
-                WordsFindResponse(emptyList<WordResponse>(), 0, requestId = requestId),
+                WordsFindResponse(emptyList<WordResponse>(), false, 0, requestId = requestId),
             )
         }
 
         val startTimeMS = System.currentTimeMillis()
-        val subEngWord = convertGeoToEngWord(subString)
-        val validWords = wordsRepository.findByEngWordContains(subEngWord, nLimit).map {wordsEntity ->
+        val validWords = wordsRepository.findByGeoWordContains(subGeoWord, nLimit).map {wordsEntity ->
             WordResponse.from(wordsEntity, WordResponseType.VALID)
         }
-        val deletedWords = wordsDeletedRepository.findByDelEngWordContains(subEngWord, nLimit).map {wordsEntity ->
+        val deletedWords = wordsDeletedRepository.findByDelGeoWordContains(subGeoWord, nLimit).map {wordsEntity ->
             WordResponse.from(wordsEntity, WordResponseType.DELETED)
         }
-        val allValidWordsCount = wordsRepository.countByEngWordContains(subEngWord)
-        val allDeletedWordsCount = wordsDeletedRepository.countByDelEngWordContains(subEngWord)
+        val containsExact = wordsRepository.isExactGeoWord(subGeoWord) > 0
+        val allValidWordsCount = wordsRepository.countByGeoWordContains(subGeoWord)
+        val allDeletedWordsCount = wordsDeletedRepository.countByDelGeoWordContains(subGeoWord)
         val allWordsCount = allValidWordsCount + allDeletedWordsCount
 
         val result = mergeSortedLists(validWords, deletedWords, nLimit, WORD_RESPONSE_COMPARATOR)
         val endTimeMS = System.currentTimeMillis()
 
-        return ResponseEntity.ok(
-            WordsFindResponse(result, allWordsCount, endTimeMS - startTimeMS, requestId),
+        val response = WordsFindResponse(
+            result, containsExact,
+            allWordsCount,
+            endTimeMS - startTimeMS,
+            requestId,
         )
+        return ResponseEntity.ok(response)
     }
 
     @PostMapping("/offer/add")

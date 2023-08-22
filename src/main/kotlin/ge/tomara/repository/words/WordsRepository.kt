@@ -9,21 +9,20 @@ import org.springframework.stereotype.Repository
 interface WordsRepository: CrudRepository<WordsEntity, Int> {
     companion object {
         const val DATABASE_NAME = "words"
-        private const val WORD_ENG_COL = "word_eng"
         private const val WORD_GEO_COL = "word_geo"
     }
 
     @Query(
-        value="SELECT COUNT(*) FROM $DATABASE_NAME WHERE $WORD_ENG_COL LIKE %?1%",
+        value="SELECT COUNT(*) FROM $DATABASE_NAME WHERE $WORD_GEO_COL = ?1 LIMIT 1",
         nativeQuery=true,
     )
-    fun countByEngWordContains(subEngWord: String): Long
+    fun isExactGeoWord(geoWord: String): Int
 
     @Query(
-        value="SELECT * FROM $DATABASE_NAME WHERE $WORD_ENG_COL LIKE %?1% ORDER BY $WORD_GEO_COL LIMIT ?2",
+        value="SELECT COUNT(*) FROM $DATABASE_NAME WHERE $WORD_GEO_COL LIKE %?1%",
         nativeQuery=true,
     )
-    fun findByEngWordContains(subEngWord: String, nLimit: Int): List<WordsEntity>
+    fun countByGeoWordContains(subGeoWord: String): Long
 
     @Query(
         value="SELECT * FROM $DATABASE_NAME WHERE $WORD_GEO_COL LIKE %?1% ORDER BY $WORD_GEO_COL LIMIT ?2",

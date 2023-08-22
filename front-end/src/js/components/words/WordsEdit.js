@@ -10,6 +10,7 @@ import {
 import {WordMetadataWrapper} from "./WordMetadataWrapper";
 import StringsSet from "../../utils/StringSet";
 import {useTheme} from "../use-theme";
+import {randomAsciiLetters} from "../../utils/random-functions";
 
 
 const INPUT_PLACEHOLDER_VALUE = "მოძებნე...";
@@ -43,38 +44,33 @@ const WordsEdit = function() {
     const getInputValue = () => editInputRef.current.value;
 
     const makeRequest = (editInputValue) => {
-        const nLimit = 5000;
+        const requestId = randomAsciiLetters(8);
         const url = "/api/word/find" + encodeUrlParams({
             "sub_geo_word": editInputValue,
-            "request_id": editInputValue,
-            "n_limit": nLimit,
+            "request_id": requestId,
+            "n_limit": 2_000,
         });
-        lastRequestId = editInputValue;
+        lastRequestId = requestId;
 
         setIsLoading(true);
         fetch(url)
             .then(res => res.json())
             .then((data) => {
                 if(lastRequestId === data["request_id"]) {
-                    const words = data["words"] || [];
-                    const valueIndex = words.indexOf(editInputValue);
-                    if(valueIndex >= 0) {
-                        words.splice(valueIndex, 1);
-                        words.splice(0, 0, editInputValue);
-                    }
-                    const wrappers = words.map(value => {
+                    const wrappers = (data["words"] || []).map(value => {
                         return <WordMetadataWrapper value={value} />
                     });
                     updateResponseMetas([
                         data["words_n_uncut"] || 0,
                         Math.round((data["time_ms"] || 0) / 1000),
                     ]);
-                    updateWordsList([wrappers, valueIndex >= 0]);
+                    updateWordsList([wrappers, data["is_exact"] || false]);
                     setIsLoading(false);
                 }
             })
             .catch((err) => {
                 updateWordsList([null, false]);
+                updateResponseMetas([0, 0]);
                 console.error(err);
             })
             .finally(() => {
@@ -131,6 +127,7 @@ const WordsEdit = function() {
                 updateInputLoaderAndMakeRequest();
             } else {
                 updateWordsList([null, false]);
+                updateResponseMetas([0, 0]);
             }
         } else if(
             GEO_CHARS_SET.has(key)
@@ -178,7 +175,7 @@ const WordsEdit = function() {
                 if(wordsList === null) {
                     return null;
                 }
-                if(wordsList.length === 0 && !isExactMatch) {
+                if(wordsList.length === 0 || !isExactMatch) {
                     return (
                         <div
                             onClick={addWordButtonClicked}
@@ -192,7 +189,10 @@ const WordsEdit = function() {
                 return null;
             })()}
             {(isLoading || wordsList === null || wordsList.length === 0)? null: (
-                <div className="words-edit-response-list">{wordsList}</div>
+                <div className={[
+                    "words-edit-response-list",
+                    (isExactMatch)? "words-edit-response-list-tall": "words-edit-response-list-low",
+                ].join(" ")}>{wordsList}</div>
             )}
             {(isLoading || wordsList === null || maxPossibleLimit === 0)? null: ((() => {
                 return (
