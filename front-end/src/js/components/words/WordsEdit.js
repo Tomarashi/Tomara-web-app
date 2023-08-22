@@ -33,11 +33,8 @@ const WordsEdit = function() {
     const editInputRef = useRef(null);
     const editInputLoaderRef = useRef(null);
     const [isLoading, setIsLoading] = useState(false);
-    const [[
-        wordsList,
-        maxPossibleLimit,
-        isExactMatch,
-    ], updateWordsList] = useState([null, 0, false]);
+    const [[wordsList, isExactMatch], updateWordsList] = useState([null, false]);
+    const [[maxPossibleLimit, timeS], updateResponseMetas] = useState([0, 0]);
     const [withTheme] = useTheme();
 
     let timeout = null;
@@ -68,13 +65,16 @@ const WordsEdit = function() {
                     const wrappers = words.map(value => {
                         return <WordMetadataWrapper value={value} />
                     });
-                    const nUncut = data["words_n_uncut"] || 0;
-                    updateWordsList([wrappers, nUncut, valueIndex >= 0]);
+                    updateResponseMetas([
+                        data["words_n_uncut"] || 0,
+                        Math.round((data["time_ms"] || 0) / 1000),
+                    ]);
+                    updateWordsList([wrappers, valueIndex >= 0]);
                     setIsLoading(false);
                 }
             })
             .catch((err) => {
-                updateWordsList([null, 0, false]);
+                updateWordsList([null, false]);
                 console.error(err);
             })
             .finally(() => {
@@ -130,7 +130,7 @@ const WordsEdit = function() {
             if(getInputValue() !== "") {
                 updateInputLoaderAndMakeRequest();
             } else {
-                updateWordsList([null, 0, false]);
+                updateWordsList([null, false]);
             }
         } else if(
             GEO_CHARS_SET.has(key)
@@ -194,9 +194,17 @@ const WordsEdit = function() {
             {(isLoading || wordsList === null || wordsList.length === 0)? null: (
                 <div className="words-edit-response-list">{wordsList}</div>
             )}
-            {(isLoading || wordsList === null || maxPossibleLimit === 0)? null: (
-                <div>{`${wordsList.length}/${maxPossibleLimit}`}</div>
-            )}
+            {(isLoading || wordsList === null || maxPossibleLimit === 0)? null: ((() => {
+                return (
+                    <div className={withTheme("words-edit-response-metas")}>
+                        <span>
+                            {wordsList.length}
+                        </span> სიტყვა <span>
+                            {maxPossibleLimit}
+                        </span>-დან [<span>{timeS}</span> წამი]
+                    </div>
+                );
+            })())}
         </div>
     );
 };

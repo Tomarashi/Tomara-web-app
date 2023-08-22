@@ -86,6 +86,7 @@ class WordsRestController {
             )
         }
 
+        val startTimeMS = System.currentTimeMillis()
         val subEngWord = convertGeoToEngWord(subString)
         val validWords = wordsRepository.findByEngWordContains(subEngWord, nLimit).map {wordsEntity ->
             WordResponse.from(wordsEntity, WordResponseType.VALID)
@@ -93,11 +94,15 @@ class WordsRestController {
         val deletedWords = wordsDeletedRepository.findByDelEngWordContains(subEngWord, nLimit).map {wordsEntity ->
             WordResponse.from(wordsEntity, WordResponseType.DELETED)
         }
-        val totalFoundN = validWords.size + deletedWords.size
+        val allValidWordsCount = wordsRepository.countByEngWordContains(subEngWord)
+        val allDeletedWordsCount = wordsDeletedRepository.countByDelEngWordContains(subEngWord)
+        val allWordsCount = allValidWordsCount + allDeletedWordsCount
 
         val result = mergeSortedLists(validWords, deletedWords, nLimit, WORD_RESPONSE_COMPARATOR)
+        val endTimeMS = System.currentTimeMillis()
+
         return ResponseEntity.ok(
-            WordsFindResponse(result, totalFoundN, requestId = requestId),
+            WordsFindResponse(result, allWordsCount, endTimeMS - startTimeMS, requestId),
         )
     }
 

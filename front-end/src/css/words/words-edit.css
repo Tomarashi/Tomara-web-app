@@ -33,6 +33,25 @@
     background: var(--global-darker-tomara-color);
 }
 
+.words-edit-response-metas-light,
+.words-edit-response-metas-dark {
+    width: 100%;
+    margin-top: 10px;
+    text-align: center;
+    font-family: bpg-arial, sans-serif;
+    font-size: 18px;
+}
+.words-edit-response-metas-light {
+    color: black;
+}
+.words-edit-response-metas-dark {
+    color: white;
+}
+.words-edit-response-metas-light span,
+.words-edit-response-metas-dark span {
+    font-weight: bold;
+}
+
 .words-edit-input-container {
     margin: 20px auto auto;
     width: 320px;

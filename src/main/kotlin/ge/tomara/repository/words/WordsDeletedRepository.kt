@@ -15,6 +15,12 @@ interface WordsDeletedRepository: CrudRepository<WordsDeletedEntity, Int> {
     }
 
     @Query(
+        value="SELECT COUNT(*) FROM $DATABASE_NAME WHERE $DEL_WORD_ENG_COL LIKE %?1%",
+        nativeQuery=true,
+    )
+    fun countByDelEngWordContains(subEngWord: String): Long
+
+    @Query(
         value="SELECT * FROM $DATABASE_NAME WHERE $DEL_WORD_ENG_COL LIKE %?1% ORDER BY $DEL_WORD_GEO_COL LIMIT ?2",
         nativeQuery=true,
     )

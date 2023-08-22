@@ -14,6 +14,12 @@ interface WordsRepository: CrudRepository<WordsEntity, Int> {
     }
 
     @Query(
+        value="SELECT COUNT(*) FROM $DATABASE_NAME WHERE $WORD_ENG_COL LIKE %?1%",
+        nativeQuery=true,
+    )
+    fun countByEngWordContains(subEngWord: String): Long
+
+    @Query(
         value="SELECT * FROM $DATABASE_NAME WHERE $WORD_ENG_COL LIKE %?1% ORDER BY $WORD_GEO_COL LIMIT ?2",
         nativeQuery=true,
     )
