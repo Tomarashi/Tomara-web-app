@@ -1,6 +1,6 @@
 import {randomAsciiLetters} from "../../utils/random-functions";
 import {encodeUrlParams} from "../../utils/url-functions";
-import {useTheme} from "../ThemeUtils";
+import {useTheme} from "../use-theme";
 
 
 const WORD_TYPE_VALID = 1;

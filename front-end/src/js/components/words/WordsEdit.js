@@ -9,7 +9,7 @@ import {
 } from "../../utils/characters";
 import {WordMetadataWrapper} from "./WordMetadataWrapper";
 import StringsSet from "../../utils/StringSet";
-import {useTheme} from "../ThemeUtils";
+import {useTheme} from "../use-theme";
 
 
 const INPUT_PLACEHOLDER_VALUE = "მოძებნე...";

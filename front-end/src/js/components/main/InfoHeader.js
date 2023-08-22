@@ -4,7 +4,7 @@ import Switch from "react-switch";
 import { FaSun, FaMoon } from "react-icons/fa";
 import * as ThemeContext from "../ThemeContext";
 import {APP_TITLE, APP_TITLE_ENG} from "../../Const";
-import {useTheme} from "../ThemeUtils";
+import {useTheme} from "../use-theme";
 
 const LogoHolder = function() {
     const [withTheme] = useTheme();

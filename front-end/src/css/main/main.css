@@ -5,7 +5,13 @@ body {
     background-repeat: no-repeat;
     background-size: cover;
     background-attachment: fixed;
+}
+
+.body-theme-light {
     background-image: url("../../media/background/background.png");
+}
+.body-theme-dark {
+    background-image: url("../../media/background/background-reversed.png");
 }
 
 body::-webkit-scrollbar {
@@ -25,6 +31,8 @@ body::-webkit-scrollbar-thumb:hover {
 .main-background {
     width: 100%;
     height: 100%;
+    display: flex;
+    flex-direction: column;
 }
 
 .main-content-light,
@@ -38,4 +46,48 @@ body::-webkit-scrollbar-thumb:hover {
 }
 .main-content-dark {
     background-color: rgba(56, 56, 56, 0.8);
+}
+
+.main-content-text-0-light,
+.main-content-text-0-dark {
+    margin-top: 25px;
+    margin-bottom: 15px;
+    width: 100%;
+    text-align: center;
+    font-size: 32px;
+    font-family: bpg-arial, sans-serif;
+}
+.main-content-text-0-light {
+    color: black;
+}
+.main-content-text-0-dark {
+    color: white;
+}
+
+.main-content-words-edit-wrapper {
+    width: 560px;
+    height: fit-content;
+    margin: 0 auto;
+}
+
+.main-content-review-create-view-wrapper {
+    width: fit-content;
+    height: fit-content;
+    margin: 0 auto 40px;
+}
+
+.main-content-text-1-light,
+.main-content-text-1-dark {
+    margin-top: 30px;
+    margin-bottom: 20px;
+    width: 100%;
+    text-align: center;
+    font-size: 30px;
+    font-family: bpg-arial, sans-serif;
+}
+.main-content-text-1-light {
+    color: black;
+}
+.main-content-text-1-dark {
+    color: white;
 }

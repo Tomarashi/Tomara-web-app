@@ -1,7 +1,7 @@
 import "../../../css/main/info-bottom.css";
 import * as ThemeContext from "../ThemeContext";
 import {APP_TITLE_ALT, UNI_NAME} from "../../Const";
-import {useTheme} from "../ThemeUtils";
+import {useTheme} from "../use-theme";
 
 const InfoBottom = function() {
     const [withTheme, theme] = useTheme();
@@ -41,7 +41,10 @@ const InfoBottom = function() {
                 </div>
                 <div className="info-bottom-texts">
                     <p>საბაკალავრო პროექტი</p>
-                    <p>{UNI_NAME}</p>
+                    <p style={{marginTop: 6}}>{UNI_NAME}</p>
+                    <p className={withTheme("info-bottom-texts-admin")}>
+                        <a href="/admin">ადმინისტრაცია</a>
+                    </p>
                 </div>
             </div>
         </div>

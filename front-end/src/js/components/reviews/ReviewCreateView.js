@@ -1,7 +1,7 @@
 import "../../../css/main/review-create-view.css";
 import {useRef, useState} from "react";
 import {FacebookLoaderWrapped} from "../loader/FacebookLoader";
-import {useTheme} from "../ThemeUtils";
+import {useTheme} from "../use-theme";
 
 const REVIEW_CONTENT_MAX_LENGTH = 250;
 const REVIEW_SEND_BUTTON = "გაგზავნა";

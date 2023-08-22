@@ -5,18 +5,32 @@ import WordsEdit from "../words/WordsEdit";
 import InfoHeader from "./InfoHeader";
 import {ThemeProvider} from "../ThemeContext";
 import InfoBottom from "./InfoBottom";
-import {useTheme} from "../ThemeUtils";
+import {useTheme} from "../use-theme";
+import {getBody} from "../../utils/dom-functions";
 
 const MainContent = function () {
     const [withTheme] = useTheme();
+
+    document.title = APP_TITLE_FULL;
+    getBody().className = withTheme("body-theme");
 
     return (
         <div className="main-background">
             <InfoHeader />
             <div style={{height: 20}} />
             <div className={withTheme("main-content")}>
-                <WordsEdit />
-                <ReviewCreateView />
+                <div className={withTheme("main-content-text-0")}>
+                    მოძებნე სიტყვა <strong>ტომარაში</strong>
+                </div>
+                <div className="main-content-words-edit-wrapper">
+                    <WordsEdit />
+                </div>
+                <div className={withTheme("main-content-text-1")}>
+                    დაგვიტოვე შენი შეფასება
+                </div>
+                <div className="main-content-review-create-view-wrapper">
+                    <ReviewCreateView />
+                </div>
             </div>
             <div style={{height: 40}} />
             <InfoBottom />
@@ -25,8 +39,6 @@ const MainContent = function () {
 };
 
 const Main = function () {
-    document.title = APP_TITLE_FULL;
-
     return (
         <ThemeProvider>
             <MainContent />
