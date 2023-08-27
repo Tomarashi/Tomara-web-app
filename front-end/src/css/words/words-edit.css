@@ -188,6 +188,12 @@
     font-family: alk-sanet, sans-serif;
 }
 
+.words-edit-response-list-item-config-valid-es-exits {
+    font-size: 24px;
+    margin-left: auto;
+    cursor: pointer;
+}
+
 .words-edit-response-list-item-valid {
     background-color: rgba(50, 205, 50, 0.6);
     color: white;

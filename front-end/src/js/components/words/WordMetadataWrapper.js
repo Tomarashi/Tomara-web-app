@@ -1,3 +1,4 @@
+import {useState} from "react";
 import {randomAsciiLetters} from "../../utils/random-functions";
 import {encodeUrlParams} from "../../utils/url-functions";
 import {useTheme} from "../use-theme";
@@ -23,6 +24,7 @@ export const WordMetadataWrapper = function(props) {
     const wordGeo = wordResponse["word_geo"];
     const wordType = wordResponse["type"] || 0;
     const wordTypeStr = wordType.toString();
+    const [existsInES, updateExistsInES] = useState(null);
     const [withTheme] = useTheme();
 
     if(!VALID_WORD_TYPES.includes(wordType)) {
@@ -33,6 +35,12 @@ export const WordMetadataWrapper = function(props) {
     const idConfig = id + "-config";
 
     let configIsVisible = false;
+
+    fetch("/api/es/exists/" + wordId)
+        .then(res => res.json())
+        .then(data => {
+            updateExistsInES(data["exists"] || false);
+        });
 
     const deleteOffer = () => {
         const url = "/api/word/offer/delete" + encodeUrlParams({
@@ -56,6 +64,26 @@ export const WordMetadataWrapper = function(props) {
                     <button onClick={deleteOffer}>
                         <i className="fa fa-trash"></i> <span>წაშლის მოთხოვნა</span>
                     </button>
+
+                    {(() => {
+                        if(!(existsInES === true || existsInES === false)) {
+                            return null;
+                        }
+                        const styles = {
+                            color: (existsInES)? "green": "red"
+                        };
+                        const title = (existsInES)?
+                            "მოიძებნება სერვისის ბაზაში":
+                            "არ მოიძებნება ბაზაში";
+                        return (
+                            <>
+                                <p style={styles} className="words-edit-response-list-item-config-valid-es-exits">
+                                    <i title={title} className="fa fa-database" />
+                                </p>
+                                <div style={{width: 12}} />
+                            </>
+                        );
+                    })()}
                 </div>
             );
         } else if(wordType === WORD_TYPE_DELETED) {
