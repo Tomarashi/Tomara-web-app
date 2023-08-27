@@ -6,7 +6,8 @@ import org.springframework.stereotype.Component
 import org.springframework.web.bind.annotation.RequestMethod
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping
 
-@Component
+// @Component
+@Deprecated("Doesn't list all possible mappings")
 class SpringBootMappingsListener: ApplicationListener<ContextRefreshedEvent> {
     companion object {
         private val methodsOrderedMap = listOf(
