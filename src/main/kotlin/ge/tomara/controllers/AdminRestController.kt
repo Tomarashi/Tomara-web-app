@@ -214,6 +214,16 @@ class AdminRestController {
         return StatsTotalResponse(views=times, uniques=sessions)
     }
 
+    @PostMapping("$WEB_METRICS_ROUTE_GROUP/delete")
+    fun deleteStats(): SuccessMessageResponse {
+        val preSessionSize = sessionMetrics.size()
+        val preTimeSize = timeMetrics.size()
+        val msg = "Deleted Session: $preSessionSize, Time: $preTimeSize"
+        sessionMetrics.clear()
+        timeMetrics.clear()
+        return SuccessMessageResponse(msg)
+    }
+
     @GetMapping("$REVIEW_ROUTE_GROUP/page")
     fun getReviews(
         @RequestParam("index") pageIndex: Int?,
