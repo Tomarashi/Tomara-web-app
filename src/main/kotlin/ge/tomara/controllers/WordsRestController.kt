@@ -90,8 +90,19 @@ class WordsRestController {
         val validWords = wordsRepository.findByGeoWordContains(subGeoWord, nLimit).map {wordsEntity ->
             WordResponse.from(wordsEntity, WordResponseType.VALID)
         }
-        val deletedWords = wordsDeletedRepository.findByDelGeoWordContains(subGeoWord, nLimit).map {wordsEntity ->
-            WordResponse.from(wordsEntity, WordResponseType.DELETED)
+        val deletedWords = ArrayList<WordResponse>(nLimit).apply {
+            val usedIds = HashSet<Int>()
+            val result = wordsDeletedRepository.findByDelGeoWordContains(subGeoWord, nLimit).filter { word ->
+                if(usedIds.contains(word.delWordId)) {
+                    false
+                } else {
+                    usedIds.add(word.delWordId)
+                    true
+                }
+            }
+            addAll(result.map {wordsEntity ->
+                WordResponse.from(wordsEntity, WordResponseType.DELETED)
+            })
         }
         val containsExact = wordsRepository.isExactGeoWord(subGeoWord) > 0
         val allValidWordsCount = wordsRepository.countByGeoWordContains(subGeoWord)
