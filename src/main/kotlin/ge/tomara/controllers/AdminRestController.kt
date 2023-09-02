@@ -245,7 +245,10 @@ class AdminRestController {
 
         val offset = pageSize * pageIndex
         val reviews = reviewsRepository.getReviewsInRange(offset, pageSize)
-        return ResponseEntity.ok(GetReviewsResponse.from(reviews))
+        val maxCount = reviewsRepository.count().toInt()
+        return ResponseEntity.ok(GetReviewsResponse.from(reviews).apply {
+            this.maxCount = maxCount
+        })
     }
 
     @PostMapping("$REVIEW_ROUTE_GROUP/delete")

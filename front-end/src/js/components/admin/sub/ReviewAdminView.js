@@ -26,14 +26,17 @@ const ReviewAdminView = function () {
         setPageIndexAndReviews
     ] = useState([1, []]);
     const [firstPage, setFirstPage] = useState(true);
+    const computeMaxPageCount = (count) => {
+        const mod = count % PAGE_SIZE;
+        return (count - mod) / PAGE_SIZE + ((mod === 0)? 0: 1);
+    };
 
     if(maxPageCount < 0) {
         fetch("/api/admin/review/count")
             .then(res => res.json())
             .then(data => {
                 const count = data["count"] || 0;
-                const mod = count % PAGE_SIZE;
-                setMaxPageCount((count - mod) / PAGE_SIZE + ((mod === 0)? 0: 1));
+                setMaxPageCount(computeMaxPageCount(count));
             });
         return (
             <div className="review-admin-view-container">
@@ -56,6 +59,8 @@ const ReviewAdminView = function () {
         fetch(`/api/admin/review/page?index=${newPageIndex - 1}&size=${PAGE_SIZE}`)
             .then(res => res.json())
             .then(data => {
+                const count = data["max_count"] || 0;
+                setMaxPageCount(computeMaxPageCount(count));
                 setPageIndexAndReviews([newPageIndex, data["reviews"]]);
             });
     };
